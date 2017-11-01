@@ -8,7 +8,7 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-// ByteColorBuffer TODO
+// ByteColorBuffer is a canvas based on a buffer of color.ByteColor.
 type ByteColorBuffer struct {
 	width           int
 	height          int
@@ -24,7 +24,7 @@ var (
 	_ BufferBasedCanvas = &ByteColorBuffer{}
 )
 
-// NewByteColorBuffer TODO
+// NewByteColorBuffer returns a new ByteColorBuffer.
 func NewByteColorBuffer(w, h int, bgColor, fgColor color.ByteColor) (*ByteColorBuffer, error) {
 	if w <= 0 || h <= 0 {
 		return nil, common.ErrInvalidNumber
@@ -43,23 +43,23 @@ func NewByteColorBuffer(w, h int, bgColor, fgColor color.ByteColor) (*ByteColorB
 	}, nil
 }
 
-// Dimensions TODO
+// Dimensions returns the width and height.
 func (cnv *ByteColorBuffer) Dimensions() (w, h int) {
 	return cnv.width, cnv.height
 }
 
-// Pixels TODO
+// Pixels returns the underlying pixel buffer.
 func (cnv *ByteColorBuffer) Pixels() []color.ByteColor {
 	return cnv.pixels
 }
 
-// set TODO
+// set is the same as Set, but without boundary checks.
 func (cnv *ByteColorBuffer) set(x, y int, bc color.ByteColor) {
 	index := xyToIndex(cnv.width, x, y)
 	cnv.pixels[index] = bc
 }
 
-// Set TODO
+// Set sets the color of the pixel at (x, y).
 func (cnv *ByteColorBuffer) Set(x, y int, c color.Color) error {
 	if !isWithinCanvas(cnv.width, cnv.height, x, y) {
 		return common.ErrInvalidNumber
@@ -72,13 +72,13 @@ func (cnv *ByteColorBuffer) Set(x, y int, c color.Color) error {
 	return nil
 }
 
-// at TODO
+// at is the same as At, but without boundary checks.
 func (cnv *ByteColorBuffer) at(x, y int) color.ByteColor {
 	index := xyToIndex(cnv.width, x, y)
 	return cnv.pixels[index]
 }
 
-// At TODO
+// At returns the color of the pixel at (x, y).
 func (cnv *ByteColorBuffer) At(x, y int) (color.Color, error) {
 	if !isWithinCanvas(cnv.width, cnv.height, x, y) {
 		return cnv.backgroundColor, common.ErrInvalidNumber
@@ -86,7 +86,7 @@ func (cnv *ByteColorBuffer) At(x, y int) (color.Color, error) {
 	return cnv.at(x, y), nil
 }
 
-// drawLine TODO
+// drawLine is the same as DrawLine, but without boundary checks.
 func (cnv *ByteColorBuffer) drawLine(x1, y1, x2, y2 int) {
 	bc := cnv.foregroundColor
 	if x1 == x2 {
@@ -106,7 +106,7 @@ func (cnv *ByteColorBuffer) drawLine(x1, y1, x2, y2 int) {
 	}
 }
 
-// DrawLine TODO
+// DrawLine draws a horizontal or vertical line.
 func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
 	if !isWithinCanvas(cnv.width, cnv.height, x1, y1) || !isWithinCanvas(cnv.width, cnv.height, x2, y2) {
 		return common.ErrInvalidNumber
@@ -118,7 +118,7 @@ func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
 	return nil
 }
 
-// DrawRect TODO
+// DrawRect draws a rectangle.
 func (cnv *ByteColorBuffer) DrawRect(x1, y1, x2, y2 int) error {
 	if !isWithinCanvas(cnv.width, cnv.height, x1, y1) || !isWithinCanvas(cnv.width, cnv.height, x2, y2) {
 		return common.ErrInvalidNumber
@@ -130,6 +130,7 @@ func (cnv *ByteColorBuffer) DrawRect(x1, y1, x2, y2 int) error {
 	return nil
 }
 
+// bucketFill is the same as BucketFill, but without boundary checks.
 func (cnv *ByteColorBuffer) bucketFill(bc color.ByteColor, pointsToBeFilled *list.List, pointsAlreadyProcessed *boolBuffer) {
 	for pointsToBeFilled.Len() != 0 {
 		back := pointsToBeFilled.Back()
@@ -160,7 +161,7 @@ func (cnv *ByteColorBuffer) bucketFill(bc color.ByteColor, pointsToBeFilled *lis
 	}
 }
 
-// BucketFill TODO
+// BucketFill fills the area enclosing (x, y).
 func (cnv *ByteColorBuffer) BucketFill(x, y int, c color.Color) error {
 	if !isWithinCanvas(cnv.width, cnv.height, x, y) {
 		return common.ErrInvalidNumber
@@ -176,13 +177,14 @@ func (cnv *ByteColorBuffer) BucketFill(x, y int, c color.Color) error {
 	return nil
 }
 
+// boolBuffer TODO
 type boolBuffer struct {
 	width  int
 	height int
 	values []bool
 }
 
-// newBoolBuffer
+// newBoolBuffer TODO
 func newBoolBuffer(w, h int) *boolBuffer {
 	return &boolBuffer{
 		width:  w,
