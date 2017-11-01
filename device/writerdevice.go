@@ -9,24 +9,24 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-// WriterDevice TODO
+// WriterDevice is a Device based on a Writer.
 type WriterDevice struct {
 	writer io.Writer
 }
 
-// Ensure that riterDevice implements the Device interface
+// Ensure that WriterDevice implements the Device interface.
 var (
 	_ Device = &WriterDevice{}
 )
 
-// NewWriterDevice TODO
+// NewWriterDevice returns a new WriterDevice.
 func NewWriterDevice(writer io.Writer) (*WriterDevice, error) {
 	return &WriterDevice{
 		writer: writer,
 	}, nil
 }
 
-// renderTopBottomBorder TODO
+// renderTopBottomBorder renders the top / buttom border of the canvas.
 func (dev *WriterDevice) renderTopBottomBorder(width int) error {
 	// NOTE: Didn't use (width + 2) to prevent potential overflow
 	fmt.Fprint(dev.writer, "-")
@@ -37,7 +37,8 @@ func (dev *WriterDevice) renderTopBottomBorder(width int) error {
 	return nil
 }
 
-// Render TODO
+// Render renders cnv.
+// cnv must implement the canvas.BufferBasedCanvas interface.
 func (dev *WriterDevice) Render(cnv canvas.Canvas) error {
 	bbcnv, ok := cnv.(canvas.BufferBasedCanvas)
 	if !ok {
