@@ -8,23 +8,29 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-// Ensure that BasicInterpreter implements the Interpreter interface
+// Ensure that BasicInterpreter implements the Interpreter interface.
 var (
 	_ Interpreter = &BasicInterpreter{}
 )
 
-// BasicInterpreter TODO
+// BasicInterpreter is a basic command interpreter.
 type BasicInterpreter struct {
 	NewCanvasFunc func(int, int) (canvas.Canvas, error)
 }
 
-// Interpret TODO
+// CanvasContainer is a container of canvas.Canvas.
+type CanvasContainer interface {
+	// Canvas returns the contained canvas.Canvas.
+	Canvas() canvas.Canvas
+
+	// SetCanvas set the contained canvas.Canvas.
+	SetCanvas(canvas.Canvas)
+}
+
+// Interpret interprets the command cmd with the given environment env.
+// env must implement the CanvasContainer interface.
 func (interp *BasicInterpreter) Interpret(env interface{}, cmd command.Command) error {
-	type canvasContainer interface {
-		Canvas() canvas.Canvas
-		SetCanvas(canvas.Canvas)
-	}
-	cc, ok := env.(canvasContainer)
+	cc, ok := env.(CanvasContainer)
 	if !ok {
 		return fmt.Errorf("Environment not supported")
 	}
