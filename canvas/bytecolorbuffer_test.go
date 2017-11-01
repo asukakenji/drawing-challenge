@@ -8,7 +8,7 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-func TestByteColorBuffer(t *testing.T) {
+func TestNewByteColorBuffer(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		w       int
@@ -77,7 +77,7 @@ func TestByteColorBuffer_Dimensions(t *testing.T) {
 	for _, c := range cases {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v), Newcolor.ByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, err)
 		}
 		w, h := cnv.Dimensions()
 		if w != c.w || h != c.h {
@@ -122,7 +122,7 @@ func TestByteColorBuffer_Set(t *testing.T) {
 	for _, c := range casesPos {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), Newcolor.ByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != nil {
@@ -153,7 +153,7 @@ func TestByteColorBuffer_Set(t *testing.T) {
 	for _, c := range casesNeg {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), Newcolor.ByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != c.err {
@@ -181,11 +181,11 @@ func TestByteColorBuffer_At(t *testing.T) {
 	for _, c := range casesPos {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), Newcolor.ByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), cnv.Set returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), Set returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
 		}
 		cAt, err := cnv.At(c.xAt, c.yAt)
 		if err != nil {
@@ -217,15 +217,178 @@ func TestByteColorBuffer_At(t *testing.T) {
 	for _, c := range casesNeg {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), Newcolor.ByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), cnv.Set returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), Set returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
 		}
 		_, err = cnv.At(c.xAt, c.yAt)
 		if err != c.err {
 			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), Expected: %#v, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, c.err, err)
 		}
 	}
+}
+
+func TestByteColorBuffer_DrawLine(t *testing.T) {
+	// Positive Cases
+	casesPos := []struct {
+		w       int
+		h       int
+		bgColor color.ByteColor
+		fgColor color.ByteColor
+		x1      int
+		y1      int
+		x2      int
+		y2      int
+		pixels  []color.ByteColor
+	}{
+		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 0, 1, 5, 1, []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			'x', 'x', 'x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}}, // Example 2
+		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 5, 2, 5, 3, []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}}, // Example 3
+		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 5, 1, 0, 1, []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			'x', 'x', 'x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}}, // Example 2 (points in reversed order)
+		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 5, 3, 5, 2, []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}}, // Example 3 (points in reverse order)
+	}
+	for _, c := range casesPos {
+		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+		}
+		err = cnv.DrawLine(c.x1, c.y1, c.x2, c.y2)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), Expected: err == nil, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+		}
+		if !reflect.DeepEqual(cnv.Pixels(), c.pixels) {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), Expected: %#v, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, c.pixels, cnv.Pixels())
+		}
+	}
+
+	// Negative Cases
+	casesNeg := []struct {
+		w       int
+		h       int
+		bgColor color.ByteColor
+		fgColor color.ByteColor
+		x1      int
+		y1      int
+		x2      int
+		y2      int
+		err     error
+	}{
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 1, 1, common.ErrInvalidNumber},
+	}
+	for _, c := range casesNeg {
+		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+		}
+		err = cnv.DrawLine(c.x1, c.y1, c.x2, c.y2)
+		if err != c.err {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), Expected: %#v, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, c.err, err)
+		}
+	}
+}
+
+func TestByteColorBuffer_DrawRect(t *testing.T) {
+	// Positive Cases
+	casesPos := []struct {
+		w       int
+		h       int
+		bgColor color.ByteColor
+		fgColor color.ByteColor
+		x1      int
+		y1      int
+		x2      int
+		y2      int
+		pixels  []color.ByteColor
+	}{
+		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 13, 0, 17, 2, []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}}, // Example 4
+		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 17, 2, 13, 0, []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}}, // Example 4 (points in reverse order)
+	}
+	for _, c := range casesPos {
+		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+		}
+		err = cnv.DrawRect(c.x1, c.y1, c.x2, c.y2)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), Expected: err == nil, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+		}
+		if !reflect.DeepEqual(cnv.Pixels(), c.pixels) {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), Expected: %#v, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, c.pixels, cnv.Pixels())
+		}
+	}
+
+	// Negative Cases
+	casesNeg := []struct {
+		w       int
+		h       int
+		bgColor color.ByteColor
+		fgColor color.ByteColor
+		x1      int
+		y1      int
+		x2      int
+		y2      int
+		err     error
+	}{
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrInvalidNumber},
+	}
+	for _, c := range casesNeg {
+		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+		}
+		err = cnv.DrawRect(c.x1, c.y1, c.x2, c.y2)
+		if err != c.err {
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), Expected: %#v, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, c.err, err)
+		}
+	}
+}
+
+func TestByteColorBuffer_BucketFill(t *testing.T) {
+	// TODO: Write this!
 }

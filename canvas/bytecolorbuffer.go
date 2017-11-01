@@ -112,7 +112,7 @@ func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
 		return common.ErrInvalidNumber
 	}
 	if !isHorizontalOrVerticalLine(x1, y1, x2, y2) {
-		return fmt.Errorf("Not horiontal or vertical")
+		return common.ErrInvalidNumber
 	}
 	cnv.drawLine(x1, y1, x2, y2)
 	return nil
