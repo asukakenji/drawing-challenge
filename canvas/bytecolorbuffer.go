@@ -9,6 +9,7 @@ import (
 )
 
 // ByteColorBuffer is a canvas based on a buffer of color.ByteColor.
+// It implements the Canvas interface and the BufferBasedCanvas interface.
 type ByteColorBuffer struct {
 	width           int
 	height          int
@@ -18,7 +19,7 @@ type ByteColorBuffer struct {
 }
 
 // Ensure that ByteColorBuffer implements the Canvas interface
-// and the BufferBasedCanvas interface
+// and the BufferBasedCanvas interface.
 var (
 	_ Canvas            = &ByteColorBuffer{}
 	_ BufferBasedCanvas = &ByteColorBuffer{}
