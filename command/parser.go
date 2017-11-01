@@ -8,22 +8,24 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-// Parser TODO
+// Parser represents a command parser.
 type Parser interface {
-	ParseCommand(string) (Command, error)
+	// ParseCommand parses s and returns a command.Command.
+	ParseCommand(s string) (Command, error)
 }
 
-// BasicParser TODO
+// BasicParser is a basic command parser.
+// It implements the Parser interface.
 type BasicParser struct {
 	parseColorFunc func(string) (color.Color, error)
 }
 
-// Ensure that BasicParser implements the Parser interface
+// Ensure that BasicParser implements the Parser interface.
 var (
 	_ Parser = &BasicParser{}
 )
 
-// NewBasicParser TODO
+// NewBasicParser returns a new BasicParser.
 func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicParser, error) {
 	if parseColorFunc == nil {
 		return nil, common.ErrNilPointer
@@ -33,7 +35,7 @@ func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicPar
 	}, nil
 }
 
-// ParseCommand TODO
+// ParseCommand parses s and returns a command.Command.
 func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 	if s == "" {
 		return nil, common.ErrEmptyCommand

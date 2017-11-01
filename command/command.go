@@ -2,7 +2,7 @@ package command
 
 import "github.com/asukakenji/drawing-challenge/color"
 
-// Command represents a command in the project.
+// Command represents a command defined in the project.
 // There is no requirement on the underlying implementation.
 // Types implementing Command are supposed to be value types
 // with all their fields being public.
@@ -60,7 +60,7 @@ type QuitCommand struct {
 // Command is a dummy method to mark the type as implementing the Command interface.
 func (cmd QuitCommand) Command() {}
 
-// Ensure that the command types implement the Command interface
+// Ensure that the command types implement the Command interface.
 var (
 	_ Command = NewCanvasCommand{}
 	_ Command = DrawLineCommand{}
