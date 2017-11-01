@@ -6,7 +6,7 @@ import "github.com/asukakenji/drawing-challenge/common"
 // It implements the Color interface.
 type ByteColor byte
 
-// Ensure that ByteColor implements the Color interface
+// Ensure that ByteColor implements the Color interface.
 var (
 	_ Color = ByteColor(0)
 )
