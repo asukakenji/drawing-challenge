@@ -407,44 +407,71 @@ func TestByteColorBuffer_BucketFill(t *testing.T) {
 		t.Errorf("DrawRect returned err != nil: %#v", err)
 	}
 
-	pixels0 := []color.ByteColor{
-		'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
-		'x', 'x', 'x', 'x', 'x', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
-		' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
-		' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+	// Positive Cases
+	casesPos := []struct {
+		x      int
+		y      int
+		c      color.Color
+		pixels []color.ByteColor
+	}{
+		{9, 2, color.ByteColor('o'), []color.ByteColor{
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			'x', 'x', 'x', 'x', 'x', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
+			' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+		}}, // Example 5
+		{0, 1, color.ByteColor('v'), []color.ByteColor{
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			'v', 'v', 'v', 'v', 'v', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
+			' ', ' ', ' ', ' ', ' ', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			' ', ' ', ' ', ' ', ' ', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+		}},
+		{3, 3, color.ByteColor('o'), []color.ByteColor{
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			'v', 'v', 'v', 'v', 'v', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
+			'o', 'o', 'o', 'o', 'o', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			'o', 'o', 'o', 'o', 'o', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+		}},
+		{5, 1, color.ByteColor('o'), []color.ByteColor{
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+		}},
+		{2, 2, color.ByteColor(' '), []color.ByteColor{
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
+			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		}},
 	}
-	err = cnv.BucketFill(9, 2, color.ByteColor('o')) // Example 5
-	if err != nil {
-		t.Errorf("BucketFill returned err != nil: %#v", err)
-	}
-	if !reflect.DeepEqual(cnv.Pixels(), pixels0) {
-		t.Errorf("Case 0: Expected: %#v, Got: %#v", pixels0, cnv.Pixels())
+	for _, c := range casesPos {
+		err = cnv.BucketFill(c.x, c.y, c.c)
+		if err != nil {
+			t.Errorf("Case: (%d, %d, %#v), Expected: err == nil, Got: %#v", c.x, c.y, c.c, err)
+		}
+		if !reflect.DeepEqual(cnv.Pixels(), c.pixels) {
+			t.Errorf("Case: (%d, %d, %#v), Expected: %#v, Got: %#v", c.x, c.y, c.c, c.pixels, cnv.Pixels())
+		}
 	}
 
-	err1 := common.ErrPointOutsideCanvas
-	err = cnv.BucketFill(-1, 0, color.ByteColor('o'))
-	if err != err1 {
-		t.Errorf("Case 1a: Expected: %#v, Got: %#v", err1, err)
+	// Negative Cases
+	casesNeg := []struct {
+		x   int
+		y   int
+		c   color.Color
+		err error
+	}{
+		{-1, 0, color.ByteColor('o'), common.ErrPointOutsideCanvas},
+		{0, -1, color.ByteColor('o'), common.ErrPointOutsideCanvas},
+		{20, 0, color.ByteColor('o'), common.ErrPointOutsideCanvas},
+		{0, 4, color.ByteColor('o'), common.ErrPointOutsideCanvas},
+		{0, 0, byteColor('o'), common.ErrColorTypeNotSupported},
 	}
-	err = cnv.BucketFill(0, -1, color.ByteColor('o'))
-	if err != err1 {
-		t.Errorf("Case 1b: Expected: %#v, Got: %#v", err1, err)
+	for _, c := range casesNeg {
+		err = cnv.BucketFill(c.x, c.y, c.c)
+		if err != c.err {
+			t.Errorf("Case: (%d, %d, %#v), Expected: %#v, Got: %#v", c.x, c.y, c.c, c.err, err)
+		}
 	}
-	err = cnv.BucketFill(20, 0, color.ByteColor('o'))
-	if err != err1 {
-		t.Errorf("Case 1c: Expected: %#v, Got: %#v", err1, err)
-	}
-	err = cnv.BucketFill(0, 4, color.ByteColor('o'))
-	if err != err1 {
-		t.Errorf("Case 1d: Expected: %#v, Got: %#v", err1, err)
-	}
-
-	err2 := common.ErrColorTypeNotSupported
-	err = cnv.BucketFill(0, 0, byteColor('o'))
-	if err != err2 {
-		t.Errorf("Case 2: Expected: %#v, Got: %#v", err2, err)
-	}
-
-	// TODO: Add more cases
-	// TODO: Rewrite the algorithm
 }

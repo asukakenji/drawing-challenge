@@ -132,7 +132,7 @@ func (cnv *ByteColorBuffer) DrawRect(x1, y1, x2, y2 int) error {
 }
 
 // bucketFill is the same as BucketFill, but without boundary checks.
-func (cnv *ByteColorBuffer) bucketFill(bc color.ByteColor, pointsToBeFilled *list.List, pointsAlreadyProcessed *boolBuffer) {
+func (cnv *ByteColorBuffer) bucketFill(bc, colorToBeReplaced color.ByteColor, pointsToBeFilled *list.List, pointsAlreadyProcessed *boolBuffer) {
 	for pointsToBeFilled.Len() != 0 {
 		back := pointsToBeFilled.Back()
 		pointsToBeFilled.Remove(back)
@@ -143,7 +143,7 @@ func (cnv *ByteColorBuffer) bucketFill(bc color.ByteColor, pointsToBeFilled *lis
 			continue
 		}
 		pointsAlreadyProcessed.Set(x, y)
-		if c.Equals(cnv.foregroundColor) {
+		if !c.Equals(colorToBeReplaced) {
 			continue
 		}
 		cnv.set(x, y, bc)
@@ -171,9 +171,10 @@ func (cnv *ByteColorBuffer) BucketFill(x, y int, c color.Color) error {
 	if !ok {
 		return common.ErrColorTypeNotSupported
 	}
+	colorToBeReplaced := cnv.at(x, y)
 	pointsToBeFilled := list.New()
 	pointsToBeFilled.PushBack(point{x, y})
 	pointsAlreadyProcessed := newBoolBuffer(cnv.width, cnv.height)
-	cnv.bucketFill(bc, pointsToBeFilled, pointsAlreadyProcessed)
+	cnv.bucketFill(bc, colorToBeReplaced, pointsToBeFilled, pointsAlreadyProcessed)
 	return nil
 }
