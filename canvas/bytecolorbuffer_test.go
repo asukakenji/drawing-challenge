@@ -54,8 +54,8 @@ func TestNewByteColorBuffer(t *testing.T) {
 		fgColor color.ByteColor
 		err     error
 	}{
-		{0, 1, color.ByteColor(' '), color.ByteColor('x'), common.ErrInvalidNumber},
-		{1, 0, color.ByteColor(' '), color.ByteColor('x'), common.ErrInvalidNumber},
+		{0, 1, color.ByteColor(' '), color.ByteColor('x'), common.ErrWidthOrHeightNotPositive},
+		{1, 0, color.ByteColor(' '), color.ByteColor('x'), common.ErrWidthOrHeightNotPositive},
 	}
 	for _, c := range casesNeg {
 		_, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
@@ -144,11 +144,11 @@ func TestByteColorBuffer_Set(t *testing.T) {
 		c       color.Color
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, color.ByteColor('x'), common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, color.ByteColor('x'), common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, color.ByteColor('x'), common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, color.ByteColor('x'), common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, byteColor('x'), common.ErrInvalidColor},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, color.ByteColor('x'), common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, color.ByteColor('x'), common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, color.ByteColor('x'), common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, color.ByteColor('x'), common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, byteColor('x'), common.ErrColorTypeNotSupported},
 	}
 	for _, c := range casesNeg {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
@@ -209,10 +209,10 @@ func TestByteColorBuffer_At(t *testing.T) {
 		yAt     int
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), -1, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, -1, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 2, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, 3, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), -1, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, -1, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 2, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, 3, common.ErrPointOutsideCanvas},
 	}
 	for _, c := range casesNeg {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
@@ -294,15 +294,15 @@ func TestByteColorBuffer_DrawLine(t *testing.T) {
 		y2      int
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 1, 1, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 1, 1, common.ErrLineNotHorizontalOrVertical},
 	}
 	for _, c := range casesNeg {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
@@ -368,14 +368,14 @@ func TestByteColorBuffer_DrawRect(t *testing.T) {
 		y2      int
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrInvalidNumber},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrInvalidNumber},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrPointOutsideCanvas},
+		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrPointOutsideCanvas},
 	}
 	for _, c := range casesNeg {
 		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
@@ -390,5 +390,61 @@ func TestByteColorBuffer_DrawRect(t *testing.T) {
 }
 
 func TestByteColorBuffer_BucketFill(t *testing.T) {
-	// TODO: Write this!
+	cnv, err := NewByteColorBuffer(20, 4, color.ByteColor(' '), color.ByteColor('x'))
+	if err != nil {
+		t.Errorf("NewByteColorBuffer returned err != nil: %#v", err)
+	}
+	err = cnv.DrawLine(0, 1, 5, 1) // Example 2
+	if err != nil {
+		t.Errorf("DrawLine returned err != nil: %#v", err)
+	}
+	err = cnv.DrawLine(5, 2, 5, 3) // Example 3
+	if err != nil {
+		t.Errorf("DrawLine returned err != nil: %#v", err)
+	}
+	err = cnv.DrawRect(13, 0, 17, 2) // Example 4
+	if err != nil {
+		t.Errorf("DrawRect returned err != nil: %#v", err)
+	}
+
+	pixels0 := []color.ByteColor{
+		'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+		'x', 'x', 'x', 'x', 'x', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
+		' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
+		' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+	}
+	err = cnv.BucketFill(9, 2, color.ByteColor('o')) // Example 5
+	if err != nil {
+		t.Errorf("BucketFill returned err != nil: %#v", err)
+	}
+	if !reflect.DeepEqual(cnv.Pixels(), pixels0) {
+		t.Errorf("Case 0: Expected: %#v, Got: %#v", pixels0, cnv.Pixels())
+	}
+
+	err1 := common.ErrPointOutsideCanvas
+	err = cnv.BucketFill(-1, 0, color.ByteColor('o'))
+	if err != err1 {
+		t.Errorf("Case 1a: Expected: %#v, Got: %#v", err1, err)
+	}
+	err = cnv.BucketFill(0, -1, color.ByteColor('o'))
+	if err != err1 {
+		t.Errorf("Case 1b: Expected: %#v, Got: %#v", err1, err)
+	}
+	err = cnv.BucketFill(20, 0, color.ByteColor('o'))
+	if err != err1 {
+		t.Errorf("Case 1c: Expected: %#v, Got: %#v", err1, err)
+	}
+	err = cnv.BucketFill(0, 4, color.ByteColor('o'))
+	if err != err1 {
+		t.Errorf("Case 1d: Expected: %#v, Got: %#v", err1, err)
+	}
+
+	err2 := common.ErrColorTypeNotSupported
+	err = cnv.BucketFill(0, 0, byteColor('o'))
+	if err != err2 {
+		t.Errorf("Case 2: Expected: %#v, Got: %#v", err2, err)
+	}
+
+	// TODO: Add more cases
+	// TODO: Rewrite the algorithm
 }

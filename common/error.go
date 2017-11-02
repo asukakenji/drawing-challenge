@@ -32,4 +32,16 @@ var (
 
 	// ErrCanvasNotSupported TODO
 	ErrCanvasNotSupported = errors.New("Canvas not supported")
+
+	// ErrPointOutsideCanvas TODO
+	ErrPointOutsideCanvas = errors.New("Point outside canvas")
+
+	// ErrLineNotHorizontalOrVertical TODO
+	ErrLineNotHorizontalOrVertical = errors.New("Line not horizontal or vertical")
+
+	// ErrColorTypeNotSupported TODO
+	ErrColorTypeNotSupported = errors.New("Color type not supported")
+
+	// ErrWidthOrHeightNotPositive TODO
+	ErrWidthOrHeightNotPositive = errors.New("'width' or 'height' not positive")
 )
