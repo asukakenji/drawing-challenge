@@ -1,44 +1,6 @@
 package color
 
-import (
-	"testing"
-
-	"github.com/asukakenji/drawing-challenge/common"
-)
-
-func TestParseByteColor(t *testing.T) {
-	// Positive Cases
-	casesPos := []struct {
-		s     string
-		color Color
-	}{
-		{"A", ByteColor('A')},
-	}
-	for _, c := range casesPos {
-		color, err := ParseByteColor(c.s)
-		if err != nil {
-			t.Errorf("Case: %s, Expected: err == nil, Got: %#v", c.s, err)
-		}
-		if color != c.color {
-			t.Errorf("Case: %s, Expected: %#v, Got: %#v", c.s, c.color, color)
-		}
-	}
-
-	// Negative Cases
-	casesNeg := []struct {
-		s   string
-		err error
-	}{
-		{"", common.ErrEmptyColor},
-		{"AA", common.ErrInvalidColor},
-	}
-	for _, c := range casesNeg {
-		_, err := ParseByteColor(c.s)
-		if err != c.err {
-			t.Errorf("Case: %s, Expected: err == nil, Got: %#v", c.s, err)
-		}
-	}
-}
+import "testing"
 
 // This type is created for testing purpose only
 type byteColor byte
