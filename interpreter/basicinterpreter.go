@@ -6,15 +6,23 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
+// BasicInterpreter is a basic command interpreter.
+// It implements the Interpreter interface.
+//
+// Commands supported by this parser:
+// NewCanvasCommand,
+// DrawLineCommand,
+// DrawRectCommand,
+// BucketFillCommand.
+//
+type BasicInterpreter struct {
+	NewCanvasFunc func(int, int) (canvas.Canvas, error)
+}
+
 // Ensure that BasicInterpreter implements the Interpreter interface.
 var (
 	_ Interpreter = &BasicInterpreter{}
 )
-
-// BasicInterpreter is a basic command interpreter.
-type BasicInterpreter struct {
-	NewCanvasFunc func(int, int) (canvas.Canvas, error)
-}
 
 // CanvasContainer is a container of canvas.Canvas.
 type CanvasContainer interface {
