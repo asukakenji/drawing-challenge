@@ -31,6 +31,7 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 		s       string
 		command Command
 	}{
+		{"", EmptyCommand{}},
 		{"C 20 4", NewCanvasCommand{20, 4}},                          // Example 1
 		{"L 1 2 6 2", DrawLineCommand{1, 2, 6, 2}},                   // Example 2
 		{"L 6 3 6 4", DrawLineCommand{6, 3, 6, 4}},                   // Example 3
@@ -53,7 +54,6 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 		s   string
 		err error
 	}{
-		{"", common.ErrEmptyCommand},
 		{"C 1 2 3", common.ErrInvalidArgumentCount},
 		{"C a 2", common.ErrInvalidNumber},
 		{"C 1 b", common.ErrInvalidNumber},

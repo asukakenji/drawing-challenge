@@ -9,9 +9,6 @@ var (
 	// ErrUnknownCommand TODO
 	ErrUnknownCommand = errors.New("Unknown command")
 
-	// ErrEmptyCommand TODO
-	ErrEmptyCommand = errors.New("Empty command")
-
 	// ErrCommandNotSupported TODO
 	ErrCommandNotSupported = errors.New("Command not supported")
 
@@ -41,4 +38,7 @@ var (
 
 	// ErrWidthOrHeightNotPositive TODO
 	ErrWidthOrHeightNotPositive = errors.New("'width' or 'height' not positive")
+
+	// ErrEnvironmentNotSupported TODO
+	ErrEnvironmentNotSupported = errors.New("Environment not supported")
 )

@@ -69,9 +69,6 @@ func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicPar
 //
 // Errors
 //
-// common.ErrEmptyCommand:
-// Will be returned if s == "".
-//
 // common.ErrUnknownCommand:
 // Will be returned if the command is not recognized by this parser.
 //
@@ -85,7 +82,7 @@ func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicPar
 //
 func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 	if s == "" {
-		return nil, common.ErrEmptyCommand
+		return EmptyCommand{}, nil
 	}
 	// TODO: Use regular expression
 	words := strings.Split(s, " ")

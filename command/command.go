@@ -16,6 +16,13 @@ type Command interface {
 // See https://golang.org/src/go/ast/ast.go for examples of
 // dummy interface methods in the standard library.
 
+// EmptyCommand TODO
+type EmptyCommand struct {
+}
+
+// Command is a dummy method to mark the type as implementing the Command interface.
+func (cmd EmptyCommand) Command() {}
+
 // NewCanvasCommand represents the "new canvas" command.
 // It implements the Command interface.
 type NewCanvasCommand struct {
@@ -71,6 +78,7 @@ func (cmd QuitCommand) Command() {}
 
 // Ensure that the command types implement the Command interface.
 var (
+	_ Command = EmptyCommand{}
 	_ Command = NewCanvasCommand{}
 	_ Command = DrawLineCommand{}
 	_ Command = DrawRectCommand{}

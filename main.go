@@ -9,7 +9,6 @@ import (
 	"github.com/asukakenji/drawing-challenge/canvas"
 	"github.com/asukakenji/drawing-challenge/color"
 	"github.com/asukakenji/drawing-challenge/command"
-	"github.com/asukakenji/drawing-challenge/common"
 	"github.com/asukakenji/drawing-challenge/device"
 	"github.com/asukakenji/drawing-challenge/interpreter"
 )
@@ -106,23 +105,23 @@ func main() {
 		line := stdin.Text()
 		cmd, err := commandParser.ParseCommand(line)
 		if err != nil {
-			if err == common.ErrEmptyCommand {
-				continue
-			}
 			fmt.Println(err)
 			continue
 		}
 
-		if _, ok := cmd.(command.QuitCommand); ok {
+		switch cmd := cmd.(type) {
+		case command.EmptyCommand:
+			continue
+		case command.QuitCommand:
 			return
-		}
-
-		err = interp.Interpret(env, cmd)
-		if err != nil {
-			fmt.Println(err)
-		}
-		if cnv := env.Canvas(); cnv != nil {
-			dev.Render(cnv)
+		default:
+			err = interp.Interpret(env, cmd)
+			if err != nil {
+				fmt.Println(err)
+			}
+			if cnv := env.Canvas(); cnv != nil {
+				dev.Render(cnv)
+			}
 		}
 	}
 }

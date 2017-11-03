@@ -1,8 +1,6 @@
 package interpreter
 
 import (
-	"fmt"
-
 	"github.com/asukakenji/drawing-challenge/canvas"
 	"github.com/asukakenji/drawing-challenge/command"
 	"github.com/asukakenji/drawing-challenge/common"
@@ -28,11 +26,25 @@ type CanvasContainer interface {
 }
 
 // Interpret interprets the command cmd with the given environment env.
+//
 // env must implement the CanvasContainer interface.
+//
+// Errors
+//
+// common.ErrEnvironmentNotSupported:
+// Will be returned if env is not supported by this interpreter.
+//
+// common.ErrCommandNotSupported:
+// Will be returned if cmd is not supported by this interpreter.
+//
+// Other errors:
+// May be returned depending on the commands supported.
+// TODO: Write this!
+//
 func (interp *BasicInterpreter) Interpret(env interface{}, cmd command.Command) error {
 	cc, ok := env.(CanvasContainer)
 	if !ok {
-		return fmt.Errorf("Environment not supported")
+		return common.ErrEnvironmentNotSupported
 	}
 	switch cmd := cmd.(type) {
 	case command.NewCanvasCommand:
