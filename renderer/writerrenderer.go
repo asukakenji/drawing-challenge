@@ -1,4 +1,4 @@
-package device
+package renderer
 
 import (
 	"fmt"
@@ -9,25 +9,26 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-// WriterDevice is a Device based on a Writer.
-type WriterDevice struct {
+// WriterRenderer is a renderer based on an io.Writer.
+// It implements the Renderer interface.
+type WriterRenderer struct {
 	writer io.Writer
 }
 
-// Ensure that WriterDevice implements the Device interface.
+// Ensure that WriterRenderer implements the Renderer interface.
 var (
-	_ Device = &WriterDevice{}
+	_ Renderer = &WriterRenderer{}
 )
 
-// NewWriterDevice returns a new WriterDevice.
-func NewWriterDevice(writer io.Writer) (*WriterDevice, error) {
-	return &WriterDevice{
+// NewWriterRenderer returns a new WriterRenderer.
+func NewWriterRenderer(writer io.Writer) (*WriterRenderer, error) {
+	return &WriterRenderer{
 		writer: writer,
 	}, nil
 }
 
 // renderTopBottomBorder renders the top / buttom border of the canvas.
-func (dev *WriterDevice) renderTopBottomBorder(width int) error {
+func (dev *WriterRenderer) renderTopBottomBorder(width int) error {
 	// NOTE: Didn't use (width + 2) to prevent potential overflow
 	fmt.Fprint(dev.writer, "-")
 	for i := 0; i < width; i++ {
@@ -46,12 +47,12 @@ func (dev *WriterDevice) renderTopBottomBorder(width int) error {
 // Errors
 //
 // common.ErrCanvasNotSupported:
-// Will be returned if cnv is not supported by this device.
+// Will be returned if cnv is not supported by this renderer.
 //
 // common.ErrColorNotSupported:
-// Will be returned if a color inside cnv is not supported by this device.
+// Will be returned if a color inside cnv is not supported by this renderer.
 //
-func (dev *WriterDevice) Render(cnv canvas.Canvas) error {
+func (dev *WriterRenderer) Render(cnv canvas.Canvas) error {
 	bbcnv, ok := cnv.(canvas.BufferBasedCanvas)
 	if !ok {
 		return common.ErrCanvasNotSupported

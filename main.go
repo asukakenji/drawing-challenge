@@ -9,8 +9,8 @@ import (
 	"github.com/asukakenji/drawing-challenge/canvas"
 	"github.com/asukakenji/drawing-challenge/color"
 	"github.com/asukakenji/drawing-challenge/command"
-	"github.com/asukakenji/drawing-challenge/device"
 	"github.com/asukakenji/drawing-challenge/interpreter"
+	"github.com/asukakenji/drawing-challenge/renderer"
 )
 
 // SimpleEnvironment TODO
@@ -75,7 +75,7 @@ func main() {
 	env := &SimpleEnvironment{}
 
 	// Setup device (standard output)
-	dev, err := device.NewWriterDevice(os.Stdout)
+	dev, err := renderer.NewWriterRenderer(os.Stdout)
 	if err != nil {
 		fmt.Println(err)
 		return
