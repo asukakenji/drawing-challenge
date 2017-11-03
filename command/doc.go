@@ -1,3 +1,4 @@
 // Package command defines the Command interface,
-// and several types which implement it.
+// several types which implement it, the Parser interface,
+// and the BasicParser type which implements it.
 package command

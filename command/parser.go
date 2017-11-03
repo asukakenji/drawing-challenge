@@ -10,12 +10,36 @@ import (
 
 // Parser represents a command parser.
 type Parser interface {
-	// ParseCommand parses s and returns a command.Command.
+	// ParseCommand parses s and returns a Command.
+	//
+	// Errors
+	//
+	// common.ErrEmptyCommand:
+	// Will be returned if s == "".
+	//
+	// common.ErrUnknownCommand:
+	// Will be returned if the command is not recognized by this parser.
+	//
+	// common.ErrInvalidArgumentCount:
+	// Will be returned if s contains a command recognized by this parser,
+	// but the argument count is invalid.
+	//
+	// Other errors:
+	// May be returned depending on the commands supported.
+	//
 	ParseCommand(s string) (Command, error)
 }
 
 // BasicParser is a basic command parser.
 // It implements the Parser interface.
+//
+// Commands supported by this parser:
+// NewCanvasCommand,
+// DrawLineCommand,
+// DrawRectCommand,
+// BucketFillCommand,
+// QuitCommand.
+//
 type BasicParser struct {
 	parseColorFunc func(string) (color.Color, error)
 }
@@ -26,6 +50,12 @@ var (
 )
 
 // NewBasicParser returns a new BasicParser.
+//
+// Errors
+//
+// common.ErrNilPointer:
+// Will be returned if parseColorFunc == nil.
+//
 func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicParser, error) {
 	if parseColorFunc == nil {
 		return nil, common.ErrNilPointer
@@ -35,7 +65,24 @@ func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicPar
 	}, nil
 }
 
-// ParseCommand parses s and returns a command.Command.
+// ParseCommand parses s and returns a Command.
+//
+// Errors
+//
+// common.ErrEmptyCommand:
+// Will be returned if s == "".
+//
+// common.ErrUnknownCommand:
+// Will be returned if the command is not recognized by this parser.
+//
+// common.ErrInvalidArgumentCount:
+// Will be returned if s contains a command recognized by this parser,
+// but the argument count is invalid.
+//
+// Other errors:
+// May be returned depending on the commands supported.
+// TODO: Write this!
+//
 func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 	if s == "" {
 		return nil, common.ErrEmptyCommand
@@ -120,6 +167,9 @@ func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 		}
 		c, err := parser.parseColorFunc(colorString)
 		if err != nil {
+			if c != nil {
+				return BucketFillCommand{x, y, c}, err
+			}
 			return nil, err
 		}
 		return BucketFillCommand{x, y, c}, nil
