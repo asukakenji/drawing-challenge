@@ -41,4 +41,7 @@ var (
 
 	// ErrEnvironmentNotSupported TODO
 	ErrEnvironmentNotSupported = errors.New("Environment not supported")
+
+	// ErrColorNotSupported TODO
+	ErrColorNotSupported = errors.New("Color not supported")
 )

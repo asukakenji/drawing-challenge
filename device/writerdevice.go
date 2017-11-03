@@ -38,7 +38,19 @@ func (dev *WriterDevice) renderTopBottomBorder(width int) error {
 }
 
 // Render renders cnv.
+//
 // cnv must implement the canvas.BufferBasedCanvas interface.
+// The pixels of cnv must be color.ByteColor,
+// or implements this method: "ToByte() byte".
+//
+// Errors
+//
+// common.ErrCanvasNotSupported:
+// Will be returned if cnv is not supported by this device.
+//
+// common.ErrColorNotSupported:
+// Will be returned if a color inside cnv is not supported by this device.
+//
 func (dev *WriterDevice) Render(cnv canvas.Canvas) error {
 	bbcnv, ok := cnv.(canvas.BufferBasedCanvas)
 	if !ok {
@@ -47,6 +59,7 @@ func (dev *WriterDevice) Render(cnv canvas.Canvas) error {
 	width, height := bbcnv.Dimensions()
 	dev.renderTopBottomBorder(width)
 	if bcbcnv, ok := bbcnv.(*canvas.ByteColorBuffer); ok {
+		// Render the canvas row-by-row if it is a ByteColorBuffer.
 		pixels := bcbcnv.Pixels()
 		offset := 0
 		for j := 0; j < height; j++ {
@@ -54,6 +67,7 @@ func (dev *WriterDevice) Render(cnv canvas.Canvas) error {
 			offset += width
 		}
 	} else {
+		// Render the canvas pixel-by-pixel if it is not a ByteColorBuffer.
 		type toByter interface {
 			ToByte() byte
 		}
@@ -63,14 +77,14 @@ func (dev *WriterDevice) Render(cnv canvas.Canvas) error {
 				c, err := bbcnv.At(i, j)
 				if err != nil {
 					// NOTE: This should not happen
-					return err
+					panic(err)
 				}
 				if c2, ok := c.(color.ByteColor); ok {
 					fmt.Fprint(dev.writer, c2)
 				} else if c3, ok := c.(toByter); ok {
 					fmt.Fprint(dev.writer, c3.ToByte())
 				} else {
-					return common.ErrInvalidColor
+					return common.ErrColorNotSupported
 				}
 			}
 			fmt.Fprintln(dev.writer, '|')
