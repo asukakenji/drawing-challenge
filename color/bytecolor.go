@@ -12,8 +12,15 @@ var (
 )
 
 // ParseByteColor returns a ByteColor from a single-byte string.
-// If s is an empty string, common.ErrEmptyColor will be returned.
-// If s is not a single-byte string, common.ErrInvalidColor will be returned.
+//
+// Errors
+//
+// common.ErrEmptyColor:
+// Will be returned if s is an empty string.
+//
+// common.ErrInvalidColor:
+// Will be returned if s is not a single-byte string.
+//
 func ParseByteColor(s string) (ByteColor, error) {
 	if s == "" {
 		return ByteColor(0), common.ErrEmptyColor
