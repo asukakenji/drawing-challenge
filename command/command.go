@@ -14,9 +14,10 @@ type Command interface {
 
 // NOTE:
 // See https://golang.org/src/go/ast/ast.go for examples of
-// dummy interface method in the standard library.
+// dummy interface methods in the standard library.
 
 // NewCanvasCommand represents the "new canvas" command.
+// It implements the Command interface.
 type NewCanvasCommand struct {
 	Width  int
 	Height int
@@ -26,6 +27,7 @@ type NewCanvasCommand struct {
 func (cmd NewCanvasCommand) Command() {}
 
 // DrawLineCommand represents the "draw line" command.
+// It implements the Command interface.
 type DrawLineCommand struct {
 	X1 int
 	Y1 int
@@ -37,6 +39,7 @@ type DrawLineCommand struct {
 func (cmd DrawLineCommand) Command() {}
 
 // DrawRectCommand represents the "draw rect" command.
+// It implements the Command interface.
 type DrawRectCommand struct {
 	X1 int
 	Y1 int
@@ -48,6 +51,7 @@ type DrawRectCommand struct {
 func (cmd DrawRectCommand) Command() {}
 
 // BucketFillCommand represents the "bucket fill" command.
+// It implements the Command interface.
 type BucketFillCommand struct {
 	X int
 	Y int
@@ -58,6 +62,7 @@ type BucketFillCommand struct {
 func (cmd BucketFillCommand) Command() {}
 
 // QuitCommand represents the "quit" command.
+// It implements the Command interface.
 type QuitCommand struct {
 }
 
