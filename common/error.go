@@ -24,9 +24,6 @@ var (
 	// ErrInvalidColor TODO
 	ErrInvalidColor = errors.New("Invalid color")
 
-	// ErrEmptyColor TODO
-	ErrEmptyColor = errors.New("Empty color")
-
 	// ErrCanvasNotCreated TODO
 	ErrCanvasNotCreated = errors.New("Canvas not created")
 

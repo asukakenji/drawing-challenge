@@ -51,19 +51,26 @@ func main() {
 	// Setup command line flags
 	flag.Parse()
 
-	// Setup background color
-	bgColor, err := color.ParseByteColor(bgColorString)
-	if err != nil {
-		fmt.Println(err)
-		return
+	// Setup color parser
+	colorParser := &color.ByteColorParser{
+		DefaultColor: color.ByteColor(' '),
 	}
 
-	// Setup foreground color
-	fgColor, err := color.ParseByteColor(fgColorString)
+	// Setup background color
+	_bgColor, err := colorParser.ParseColor(bgColorString)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	bgColor := _bgColor.(color.ByteColor)
+
+	// Setup foreground color
+	_fgColor, err := colorParser.ParseColor(fgColorString)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fgColor := _fgColor.(color.ByteColor)
 
 	// Setup environment
 	env := &SimpleEnvironment{}
@@ -76,10 +83,7 @@ func main() {
 	}
 
 	// Setup command parser
-	parseColorFunc := func(s string) (color.Color, error) {
-		return color.ParseByteColor(s)
-	}
-	commandParser, err := command.NewBasicParser(parseColorFunc)
+	commandParser, err := command.NewBasicParser(colorParser.ParseColor)
 	if err != nil {
 		fmt.Println(err)
 		return

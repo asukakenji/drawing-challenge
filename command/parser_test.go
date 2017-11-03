@@ -10,16 +10,18 @@ import (
 
 func TestNewBasicParser(t *testing.T) {
 	// TODO: Write this!
-	NewBasicParser(func(s string) (color.Color, error) {
-		return color.ParseByteColor(s)
-	})
+	colorParser := &color.ByteColorParser{
+		DefaultColor: color.ByteColor(' '),
+	}
+	NewBasicParser(colorParser.ParseColor)
 	NewBasicParser(nil)
 }
 
 func TestBasicParser_ParseCommand(t *testing.T) {
-	parser, err := NewBasicParser(func(s string) (color.Color, error) {
-		return color.ParseByteColor(s)
-	})
+	colorParser := &color.ByteColorParser{
+		DefaultColor: color.ByteColor(' '),
+	}
+	parser, err := NewBasicParser(colorParser.ParseColor)
 	if err != nil {
 		// TODO: Write this!
 	}
