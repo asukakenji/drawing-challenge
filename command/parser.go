@@ -14,11 +14,8 @@ type Parser interface {
 	//
 	// Errors
 	//
-	// common.ErrEmptyCommand:
-	// Will be returned if s == "".
-	//
 	// common.ErrUnknownCommand:
-	// Will be returned if the command is not recognized by this parser.
+	// Will be returned if s contains a command not recognized by this parser.
 	//
 	// common.ErrInvalidArgumentCount:
 	// Will be returned if s contains a command recognized by this parser,
@@ -70,7 +67,7 @@ func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicPar
 // Errors
 //
 // common.ErrUnknownCommand:
-// Will be returned if the command is not recognized by this parser.
+// Will be returned if s contains a command not recognized by this parser.
 //
 // common.ErrInvalidArgumentCount:
 // Will be returned if s contains a command recognized by this parser,
