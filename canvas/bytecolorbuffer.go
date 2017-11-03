@@ -25,6 +25,12 @@ var (
 )
 
 // NewByteColorBuffer returns a new ByteColorBuffer.
+//
+// Errors
+//
+// common.ErrWidthOrHeightNotPositive:
+// Will be returned if width <= 0, or height <= 0.
+//
 func NewByteColorBuffer(width, height int, bgColor, fgColor color.ByteColor) (*ByteColorBuffer, error) {
 	if width <= 0 || height <= 0 {
 		return nil, common.ErrWidthOrHeightNotPositive
