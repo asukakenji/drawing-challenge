@@ -9,12 +9,37 @@ type Canvas interface {
 	Dimensions() (int, int)
 
 	// DrawLine draws a horizontal or vertical line.
+	//
+	// Errors
+	//
+	// common.ErrPointOutsideCanvas:
+	// Will be returned if (x1, y1) or (x2, y2) is outside the canvas.
+	//
+	// common.ErrLineNotHorizontalOrVertical:
+	// Will be returned if the line is not horizontal or vertical.
+	//
 	DrawLine(x1, y1, x2, y2 int) error
 
 	// DrawRect draws a rectangle.
+	//
+	// Errors
+	//
+	// common.ErrPointOutsideCanvas:
+	// Will be returned if (x1, y1) or (x2, y2) is outside the canvas.
+	//
 	DrawRect(x1, y1, x2, y2 int) error
 
-	// BucketFill fills the area enclosing (x, y).
+	// BucketFill fills the area enclosing (x, y). The pixels connecting to
+	// (x, y) having the same color that at (x, y) are replaced by c.
+	//
+	// Errors
+	//
+	// common.ErrPointOutsideCanvas:
+	// Will be returned if (x, y) is outside the canvas.
+	//
+	// common.ErrColorTypeNotSupported:
+	// Will be returned if c is not supported by the canvas.
+	//
 	BucketFill(x, y int, c color.Color) error
 }
 
@@ -23,9 +48,24 @@ type BufferBasedCanvas interface {
 	// Canvas is a super-interface of BufferBasedCanvas.
 	Canvas
 
-	// Set sets the color of the pixel at (x, y).
-	Set(x, y int, c color.Color) error
-
 	// At returns the color of the pixel at (x, y).
+	//
+	// Errors
+	//
+	// common.ErrPointOutsideCanvas:
+	// Will be returned if (x, y) is outside the canvas.
+	//
 	At(x, y int) (color.Color, error)
+
+	// Set sets the color of the pixel at (x, y).
+	//
+	// Errors
+	//
+	// common.ErrPointOutsideCanvas:
+	// Will be returned if (x, y) is outside the canvas.
+	//
+	// common.ErrColorTypeNotSupported:
+	// Will be returned if c is not supported by the canvas.
+	//
+	Set(x, y int, c color.Color) error
 }

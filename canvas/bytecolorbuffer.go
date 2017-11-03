@@ -53,6 +53,26 @@ func (cnv *ByteColorBuffer) Pixels() []color.ByteColor {
 	return cnv.pixels
 }
 
+// at is the same as At, but without boundary checks.
+func (cnv *ByteColorBuffer) at(x, y int) color.ByteColor {
+	index := xyToIndex(cnv.width, x, y)
+	return cnv.pixels[index]
+}
+
+// At returns the color of the pixel at (x, y).
+//
+// Errors
+//
+// common.ErrPointOutsideCanvas:
+// Will be returned if (x, y) is outside the canvas.
+//
+func (cnv *ByteColorBuffer) At(x, y int) (color.Color, error) {
+	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
+		return cnv.backgroundColor, common.ErrPointOutsideCanvas
+	}
+	return cnv.at(x, y), nil
+}
+
 // set is the same as Set, but without boundary checks.
 func (cnv *ByteColorBuffer) set(x, y int, bc color.ByteColor) {
 	index := xyToIndex(cnv.width, x, y)
@@ -60,6 +80,15 @@ func (cnv *ByteColorBuffer) set(x, y int, bc color.ByteColor) {
 }
 
 // Set sets the color of the pixel at (x, y).
+//
+// Errors
+//
+// common.ErrPointOutsideCanvas:
+// Will be returned if (x, y) is outside the canvas.
+//
+// common.ErrColorTypeNotSupported:
+// Will be returned if c is not supported by the canvas.
+//
 func (cnv *ByteColorBuffer) Set(x, y int, c color.Color) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
 		return common.ErrPointOutsideCanvas
@@ -70,20 +99,6 @@ func (cnv *ByteColorBuffer) Set(x, y int, c color.Color) error {
 	}
 	cnv.set(x, y, bc)
 	return nil
-}
-
-// at is the same as At, but without boundary checks.
-func (cnv *ByteColorBuffer) at(x, y int) color.ByteColor {
-	index := xyToIndex(cnv.width, x, y)
-	return cnv.pixels[index]
-}
-
-// At returns the color of the pixel at (x, y).
-func (cnv *ByteColorBuffer) At(x, y int) (color.Color, error) {
-	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
-		return cnv.backgroundColor, common.ErrPointOutsideCanvas
-	}
-	return cnv.at(x, y), nil
 }
 
 // drawLine is the same as DrawLine, but without boundary checks.
@@ -107,6 +122,15 @@ func (cnv *ByteColorBuffer) drawLine(x1, y1, x2, y2 int) {
 }
 
 // DrawLine draws a horizontal or vertical line.
+//
+// Errors
+//
+// common.ErrPointOutsideCanvas:
+// Will be returned if (x1, y1) or (x2, y2) is outside the canvas.
+//
+// common.ErrLineNotHorizontalOrVertical:
+// Will be returned if the line is not horizontal or vertical.
+//
 func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x1, y1) || !isPointInsideCanvas(cnv.width, cnv.height, x2, y2) {
 		return common.ErrPointOutsideCanvas
@@ -120,6 +144,12 @@ func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
 }
 
 // DrawRect draws a rectangle.
+//
+// Errors
+//
+// common.ErrPointOutsideCanvas:
+// Will be returned if (x1, y1) or (x2, y2) is outside the canvas.
+//
 func (cnv *ByteColorBuffer) DrawRect(x1, y1, x2, y2 int) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x1, y1) || !isPointInsideCanvas(cnv.width, cnv.height, x2, y2) {
 		return common.ErrPointOutsideCanvas
@@ -162,7 +192,17 @@ func (cnv *ByteColorBuffer) bucketFill(bc, colorToBeReplaced color.ByteColor, po
 	}
 }
 
-// BucketFill fills the area enclosing (x, y).
+// BucketFill fills the area enclosing (x, y). The pixels connecting to
+// (x, y) having the same color that at (x, y) are replaced by c.
+//
+// Errors
+//
+// common.ErrPointOutsideCanvas:
+// Will be returned if (x, y) is outside the canvas.
+//
+// common.ErrColorTypeNotSupported:
+// Will be returned if c is not supported by the canvas.
+//
 func (cnv *ByteColorBuffer) BucketFill(x, y int, c color.Color) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
 		return common.ErrPointOutsideCanvas
