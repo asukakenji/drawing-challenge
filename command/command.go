@@ -16,7 +16,8 @@ type Command interface {
 // See https://golang.org/src/go/ast/ast.go for examples of
 // dummy interface methods in the standard library.
 
-// EmptyCommand TODO
+// EmptyCommand represents a "No-op" command.
+// It implements the Command interface.
 type EmptyCommand struct {
 }
 

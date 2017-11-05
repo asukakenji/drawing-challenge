@@ -81,9 +81,7 @@ func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 	if s == "" {
 		return EmptyCommand{}, nil
 	}
-	// TODO: Use regular expression
 	words := strings.Split(s, " ")
-	// TODO: Check len(words)
 	switch command, args := words[0], words[1:]; command {
 	case "C":
 		if len(args) != 2 {
