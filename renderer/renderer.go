@@ -37,21 +37,29 @@ var (
 )
 
 // NewWriterRenderer returns a new WriterRenderer.
+//
+// Errors
+//
+// common.ErrNilPointer:
+// Will be returned if newCanvasFunc == nil.
+//
 func NewWriterRenderer(writer io.Writer) (*WriterRenderer, error) {
+	if writer == nil {
+		return nil, common.ErrNilPointer
+	}
 	return &WriterRenderer{
 		writer: writer,
 	}, nil
 }
 
 // renderTopBottomBorder renders the top / buttom border of the canvas.
-func (dev *WriterRenderer) renderTopBottomBorder(width int) error {
+func (dev *WriterRenderer) renderTopBottomBorder(width int) {
 	// NOTE: Didn't use (width + 2) to prevent potential overflow
 	fmt.Fprint(dev.writer, "-")
 	for i := 0; i < width; i++ {
 		fmt.Fprint(dev.writer, "-")
 	}
 	fmt.Fprintln(dev.writer, "-")
-	return nil
 }
 
 // Render renders cnv.
@@ -93,7 +101,7 @@ func (dev *WriterRenderer) Render(cnv canvas.Canvas) error {
 			for i := 0; i < width; i++ {
 				c, err := bbcnv.At(i, j)
 				if err != nil {
-					// NOTE: This should not happen
+					// NOTE: This should not happen if the canvas implementation is correct
 					panic(err)
 				}
 				if c2, ok := c.(color.ByteColor); ok {
