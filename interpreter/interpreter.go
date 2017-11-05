@@ -35,13 +35,29 @@ type Interpreter interface {
 // BucketFillCommand.
 //
 type BasicInterpreter struct {
-	NewCanvasFunc func(int, int) (canvas.Canvas, error)
+	newCanvasFunc func(int, int) (canvas.Canvas, error)
 }
 
 // Ensure that BasicInterpreter implements the Interpreter interface.
 var (
 	_ Interpreter = &BasicInterpreter{}
 )
+
+// NewBasicInterpreter returns a new BasicInterpreter.
+//
+// Errors
+//
+// common.ErrNilPointer:
+// Will be returned if newCanvasFunc == nil.
+//
+func NewBasicInterpreter(newCanvasFunc func(int, int) (canvas.Canvas, error)) (*BasicInterpreter, error) {
+	if newCanvasFunc == nil {
+		return nil, common.ErrNilPointer
+	}
+	return &BasicInterpreter{
+		newCanvasFunc: newCanvasFunc,
+	}, nil
+}
 
 // CanvasContainer is a container of canvas.Canvas.
 type CanvasContainer interface {
@@ -75,7 +91,7 @@ func (interp *BasicInterpreter) Interpret(env interface{}, cmd command.Command) 
 	}
 	switch cmd := cmd.(type) {
 	case command.NewCanvasCommand:
-		cnv, err := interp.NewCanvasFunc(cmd.Width, cmd.Height)
+		cnv, err := interp.newCanvasFunc(cmd.Width, cmd.Height)
 		if err != nil {
 			return err
 		}

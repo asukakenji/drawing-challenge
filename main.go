@@ -89,10 +89,12 @@ func main() {
 	}
 
 	// Setup interpreter
-	interp := &interpreter.BasicInterpreter{
-		NewCanvasFunc: func(w, h int) (canvas.Canvas, error) {
-			return canvas.NewByteColorBuffer(w, h, bgColor, fgColor)
-		},
+	interp, err := interpreter.NewBasicInterpreter(func(width, height int) (canvas.Canvas, error) {
+		return canvas.NewByteColorBuffer(width, height, bgColor, fgColor)
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	stdin := bufio.NewScanner(os.Stdin)
