@@ -199,7 +199,7 @@ func (cnv *ByteColorBuffer) bucketFill(bc, colorToBeReplaced color.ByteColor, po
 }
 
 // BucketFill fills the area enclosing (x, y). The pixels connecting to
-// (x, y) having the same color that at (x, y) are replaced by c.
+// (x, y) having the same color as that at (x, y) are replaced by c.
 //
 // Errors
 //

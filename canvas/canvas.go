@@ -30,7 +30,7 @@ type Canvas interface {
 	DrawRect(x1, y1, x2, y2 int) error
 
 	// BucketFill fills the area enclosing (x, y). The pixels connecting to
-	// (x, y) having the same color that at (x, y) are replaced by c.
+	// (x, y) having the same color as that at (x, y) are replaced by c.
 	//
 	// Errors
 	//
