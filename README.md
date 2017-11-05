@@ -7,8 +7,9 @@ https://github.com/asukakenji/drawing-challenge
 ## Manuals
 
 - [User Manual](#user-manual)
-- [Project Architecture Documentation](#project-architecture-documentation)
-- [Technical Design Documentation](#technical-design-documentation)
+- [Technical Diagrams](#technical-diagrams)
+- [Design Documentation](#design-documentation)
+- [API Documentation](#api-documentation)
 
 ## User Manual
 
@@ -72,6 +73,68 @@ https://github.com/asukakenji/drawing-challenge
         GOOS=linux GOARCH=386 go build github.com/asukakenji/drawing-challenge
         GOOS=linux GOARCH=amd64 go build github.com/asukakenji/drawing-challenge
 
-## Project Architecture Documentation
+## Technical Diagrams
 
-## Technical Design Documentation
+### Architecture Diagram
+
+// Diagram //
+
+### Package Diagram
+
+There are 6 library packages and 1 main package, as shown in the diagram:
+
+// Diagram //
+
+Package common defines types and variables
+which are needed by other packages in the project.
+
+Package color defines the Color interface,
+the ByteColor type which implements it, the Parser interface,
+and the ByteColorParser type which implements it.
+
+Package canvas defines the Canvas interface,
+the BufferBasedCanvas interface,
+and the ByteColorBuffer type which implements it.
+
+Package command defines the Command interface,
+several types which implement it, the Parser interface,
+and the BasicParser type which implements it.
+
+Package renderer defines the Renderer interface,
+and the WriterRenderer type which implements it.
+
+Package interpreter defines the Interpreter interface,
+and the BasicInterpreter type which implements it.
+
+### Class Diagram
+
+// Diagram //
+
+## Design Documentation
+
+### Empty Command Behavior
+
+If the user presses enter without entering any command, the prompt will be
+printed again.
+
+This behavior is influenced by most existing REPL (Read-Eval-Print Loop).
+
+### New Canvas Behavior
+
+The new canvas function creates a new canvas. If a canvas already exists, it is
+destroyed and replaced by the new one.
+
+Another option is to tell the user that a canvas is already created, and refuse
+to create a new one. However, this seems not robost enough since the user needs
+to quit and execute the program again to create another canvas.
+
+### Bucket Fill Behavior
+
+The bucket fill function fills the area enclosing (x, y). The pixels connecting
+to (x, y) having the same color that at (x, y) are replaced by c.
+
+This behavior is influenced by most existing drawing software.
+
+## API Documentation
+
+// TODO: Write this!
