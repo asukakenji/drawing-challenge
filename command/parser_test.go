@@ -9,21 +9,28 @@ import (
 )
 
 func TestNewBasicParser(t *testing.T) {
-	// TODO: Write this!
 	colorParser := &color.ByteColorParser{
 		DefaultColor: color.ByteColor(' '),
 	}
-	NewBasicParser(colorParser.ParseColor)
-	NewBasicParser(nil)
+
+	_, err := NewBasicParser(colorParser.ParseColor)
+	if err != nil {
+		t.Errorf("Expected: err == nil, Got: %#v", err)
+	}
+
+	_, err = NewBasicParser(nil)
+	if err != common.ErrNilPointer {
+		t.Errorf("Expected: err == %#v, Got: %#v", common.ErrNilPointer, err)
+	}
 }
 
 func TestBasicParser_ParseCommand(t *testing.T) {
 	colorParser := &color.ByteColorParser{
 		DefaultColor: color.ByteColor(' '),
 	}
-	parser, err := NewBasicParser(colorParser.ParseColor)
+	commandParser, err := NewBasicParser(colorParser.ParseColor)
 	if err != nil {
-		// TODO: Write this!
+		panic(err)
 	}
 
 	// Positive Cases
@@ -40,7 +47,7 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 		{"Q", QuitCommand{}},                                         // Example 6
 	}
 	for _, c := range casesPos {
-		command, err := parser.ParseCommand(c.s)
+		command, err := commandParser.ParseCommand(c.s)
 		if err != nil {
 			t.Errorf("Case: %s, Expected: err == nil, Got: %#v", c.s, err)
 		}
@@ -74,7 +81,7 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 		{"X 20 4", common.ErrUnknownCommand},
 	}
 	for _, c := range casesNeg {
-		_, err := parser.ParseCommand(c.s)
+		_, err := commandParser.ParseCommand(c.s)
 		if err != c.err {
 			t.Errorf("Case: %s, Expected: %#v, Got: %#v", c.s, c.err, err)
 		}

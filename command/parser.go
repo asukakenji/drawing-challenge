@@ -161,9 +161,6 @@ func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 		}
 		c, err := parser.parseColorFunc(colorString)
 		if err != nil {
-			if c != nil {
-				return BucketFillCommand{x, y, c}, err
-			}
 			return nil, err
 		}
 		return BucketFillCommand{x, y, c}, nil
