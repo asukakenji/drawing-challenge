@@ -3,45 +3,55 @@ package common
 import "errors"
 
 var (
-	// ErrNilPointer TODO
+	// ErrNilPointer indicates the argument is nil where a non-nil value is needed.
 	ErrNilPointer = errors.New("Nil pointer")
 
-	// ErrUnknownCommand TODO
-	ErrUnknownCommand = errors.New("Unknown command")
+	// ---
 
-	// ErrCommandNotSupported TODO
-	ErrCommandNotSupported = errors.New("Command not supported")
-
-	// ErrInvalidArgumentCount TODO
-	ErrInvalidArgumentCount = errors.New("Invalid number of arguments")
-
-	// ErrInvalidNumber TODO
-	ErrInvalidNumber = errors.New("Invalid number")
-
-	// ErrInvalidColor TODO
-	ErrInvalidColor = errors.New("Invalid color")
-
-	// ErrCanvasNotCreated TODO
-	ErrCanvasNotCreated = errors.New("Canvas not created")
-
-	// ErrCanvasNotSupported TODO
+	// ErrCanvasNotSupported indicates the canvas is not supported by the renderer.
 	ErrCanvasNotSupported = errors.New("Canvas not supported")
 
-	// ErrPointOutsideCanvas TODO
-	ErrPointOutsideCanvas = errors.New("Point outside canvas")
+	// ErrColorNotSupported indicates the color is not supported by the renderer.
+	ErrColorNotSupported = errors.New("Color not supported")
 
-	// ErrLineNotHorizontalOrVertical TODO
-	ErrLineNotHorizontalOrVertical = errors.New("Line not horizontal or vertical")
+	// ---
 
-	// ErrColorTypeNotSupported TODO
-	ErrColorTypeNotSupported = errors.New("Color type not supported")
-
-	// ErrWidthOrHeightNotPositive TODO
-	ErrWidthOrHeightNotPositive = errors.New("'width' or 'height' not positive")
-
-	// ErrEnvironmentNotSupported TODO
+	// ErrEnvironmentNotSupported indicates the environment is not supported by the interpreter.
 	ErrEnvironmentNotSupported = errors.New("Environment not supported")
 
-	// ErrColorNotSupported TODO
-	ErrColorNotSupported = errors.New("Color not supported")
+	// ErrCommandNotSupported indicates the command is not supported by the interpreter.
+	ErrCommandNotSupported = errors.New("Command not supported")
+
+	// ErrCanvasNotCreated indicates the canvas is not created where a command needs it.
+	ErrCanvasNotCreated = errors.New("Canvas not created")
+
+	// ---
+
+	// ErrUnknownCommand indicates the command is not recognized by the command parser.
+	ErrUnknownCommand = errors.New("Unknown command")
+
+	// ErrInvalidArgumentCount indicates the number of arguments of the command is invalid.
+	ErrInvalidArgumentCount = errors.New("Invalid number of arguments")
+
+	// ErrInvalidNumber indicates an argument could not be parsed to a number.
+	ErrInvalidNumber = errors.New("Invalid number")
+
+	// ---
+
+	// ErrWidthOrHeightNotPositive indicates the width or height of the canvas is not positive.
+	ErrWidthOrHeightNotPositive = errors.New("'width' or 'height' not positive")
+
+	// ErrPointOutsideCanvas indicates the point specified is outside the canvas.
+	ErrPointOutsideCanvas = errors.New("Point outside canvas")
+
+	// ErrColorTypeNotSupported indicates the type of the color is not supported by the canvas.
+	ErrColorTypeNotSupported = errors.New("Color type not supported")
+
+	// ErrLineNotHorizontalOrVertical indicates the line specified is not horizontal or vertical.
+	ErrLineNotHorizontalOrVertical = errors.New("Line not horizontal or vertical")
+
+	// ---
+
+	// ErrInvalidColor indicates the argument could not be parseed to a color value.
+	ErrInvalidColor = errors.New("Invalid color")
 )
