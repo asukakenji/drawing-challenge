@@ -30,23 +30,25 @@ func fill(b []color.ByteColor, bc color.ByteColor) {
 	}
 }
 
-// boolBuffer TODO
+// boolBuffer is a helper type for the bucket fill algorithm.
 type boolBuffer struct {
 	width  int
 	height int
 	values []bool
 }
 
-// newBoolBuffer TODO
-func newBoolBuffer(w, h int) *boolBuffer {
+// newBoolBuffer returns a new boolBuffer.
+func newBoolBuffer(width, height int) *boolBuffer {
 	return &boolBuffer{
-		width:  w,
-		height: h,
-		values: make([]bool, w*h),
+		width:  width,
+		height: height,
+		values: make([]bool, width*height),
 	}
 }
 
-// At TODO
+// At returns whether the pixel at (x, y) is processed.
+// It returns true for any point outside the canvas
+// to prevent it from really being processed.
 func (bb *boolBuffer) At(x, y int) bool {
 	index := xyToIndex(bb.width, x, y)
 	if index < 0 || index >= len(bb.values) {
@@ -55,11 +57,8 @@ func (bb *boolBuffer) At(x, y int) bool {
 	return bb.values[index]
 }
 
-// Set TODO
+// Set sets the pixel at (x, y) as already processed.
 func (bb *boolBuffer) Set(x, y int) {
 	index := xyToIndex(bb.width, x, y)
-	if index < 0 || index >= len(bb.values) {
-		return
-	}
 	bb.values[index] = true
 }
