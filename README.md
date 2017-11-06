@@ -192,4 +192,10 @@ This behavior is influenced by most existing drawing software.
 
 ## API Documentation
 
-// TODO: Write this!
+Run the following command in the command prompt / terminal:
+
+    godoc -http :6060
+
+Then, open a web browser and visit:
+
+    http://127.0.0.1:6060/pkg/github.com/asukakenji/drawing-challenge/
