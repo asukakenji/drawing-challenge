@@ -80,9 +80,13 @@ type CanvasContainer interface {
 // common.ErrCommandNotSupported:
 // Will be returned if cmd is not supported by this interpreter.
 //
-// Other errors:
-// May be returned depending on the commands supported.
-// TODO: Write this!
+// Other errors
+//
+// common.ErrCanvasNotCreated:
+// Will be returned if a canvas is needed, but it has not been created.
+//
+// Errors returned from the newCanvasFunc function, the canvas' DrawLine,
+// DrawRect, and BucketFill methods are returned without modifications.
 //
 func (interp *BasicInterpreter) Interpret(env interface{}, cmd command.Command) error {
 	cc, ok := env.(CanvasContainer)

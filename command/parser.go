@@ -73,9 +73,15 @@ func NewBasicParser(parseColorFunc func(string) (color.Color, error)) (*BasicPar
 // Will be returned if s contains a command recognized by this parser,
 // but the argument count is invalid.
 //
-// Other errors:
-// May be returned depending on the commands supported.
-// TODO: Write this!
+// Other errors
+//
+// common.ErrInvalidNumber:
+// Will be returned when a numeric argument is expected,
+// but it could not be parsed as a valid number.
+//
+// common.ErrInvalidColor:
+// Will be returned when a color argument is expected,
+// but it could not be parsed as a valid color.
 //
 func (parser *BasicParser) ParseCommand(s string) (Command, error) {
 	if s == "" {

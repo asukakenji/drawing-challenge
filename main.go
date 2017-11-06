@@ -13,26 +13,27 @@ import (
 	"github.com/asukakenji/drawing-challenge/renderer"
 )
 
-// SimpleEnvironment TODO
+// SimpleEnvironment is a simple environment for the interpreter.
+// It implements the interpreter.CanvasContainer interface.
 type SimpleEnvironment struct {
 	cnv canvas.Canvas
 }
 
-// Canvas TODO
+// Canvas returns the contained canvas.Canvas.
 func (env *SimpleEnvironment) Canvas() canvas.Canvas {
 	return env.cnv
 }
 
-// SetCanvas TODO
+// SetCanvas set the contained canvas.Canvas.
 func (env *SimpleEnvironment) SetCanvas(cnv canvas.Canvas) {
 	env.cnv = cnv
 }
 
 const (
-	// DefaultBGColorString TODO
+	// DefaultBGColorString is the default value for bgColorString.
 	DefaultBGColorString = " "
 
-	// DefaultFGColorString TODO
+	// DefaultFGColorString is the default value for fgColorString.
 	DefaultFGColorString = "x"
 )
 

@@ -36,10 +36,7 @@ func NewByteColorBuffer(width, height int, bgColor, fgColor color.ByteColor) (*B
 		return nil, common.ErrWidthOrHeightNotPositive
 	}
 	pixels := make([]color.ByteColor, width*height)
-	// TODO: Use the fast algorithm
-	for i := range pixels {
-		pixels[i] = bgColor
-	}
+	fill(pixels, bgColor)
 	return &ByteColorBuffer{
 		width:           width,
 		height:          height,

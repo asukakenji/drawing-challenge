@@ -101,7 +101,7 @@ func (dev *WriterRenderer) Render(cnv canvas.Canvas) error {
 			for i := 0; i < width; i++ {
 				c, err := bbcnv.At(i, j)
 				if err != nil {
-					// NOTE: This should not happen if the canvas implementation is correct
+					// NOTE: This should not happen if the canvas is correctly implemented
 					panic(err)
 				}
 				if c2, ok := c.(color.ByteColor); ok {

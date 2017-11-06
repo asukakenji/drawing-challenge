@@ -98,7 +98,7 @@ func TestBasicInterpreter_Interpret(t *testing.T) {
 	for _, c := range casesPos {
 		err = interpPos.Interpret(envPos, c.cmd)
 		if err != nil {
-			// TODO
+			t.Errorf("Case: (%#v, %#v), Expected: err == nil, Got: %#v", envPos, c.cmd, err)
 		}
 		mc := envPos.Canvas().(*mockCanvas)
 		cmd := mc.commands.Back().Value
