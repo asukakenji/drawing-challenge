@@ -79,6 +79,8 @@ https://github.com/asukakenji/drawing-challenge
 
 ![Architecture Diagram](./images/ArchitectureDiagram.png)
 
+Click [here](https://drive.google.com/file/d/0B6JV6ICUUqcuYWpTQ1VaUnN2VEE/view?usp=sharing) for the full-size diagram.
+
 This project is very simple. In fact, it could be written using only the
 `main()` function. However, it is a good chance to demostrate how a bigger
 project could be designed.
@@ -127,6 +129,8 @@ There are 6 library packages and 1 main package, as shown in the diagram:
 
 ![Package Diagram](./images/PackageDiagram.png)
 
+Click [here](https://drive.google.com/file/d/0B6JV6ICUUqcuazU1RDV0MUNrMmM/view?usp=sharing) for the full-size diagram.
+
 Package common defines types and variables
 which are needed by other packages in the project.
 
@@ -151,6 +155,8 @@ and the BasicInterpreter type which implements it.
 ### Class Diagram
 
 ![Class Diagram](./images/ClassDiagram.png)
+
+Click [here](https://drive.google.com/file/d/0B6JV6ICUUqcubG5reGRSaEdmMEE/view?usp=sharing) for the full-size diagram.
 
 ## Design Documentation
 
