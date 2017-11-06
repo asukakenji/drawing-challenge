@@ -112,7 +112,7 @@ For instance, a canvas like this:
 
 could be rendered as shown above, or, with an appropriate "Renderer",
 as a sequence of `█` characters of different colors (`R` = red, `G` = green,
-`B` = blue).
+`B` = blue) on a color terminal (using escape codes, for example).
 
 Like-wise, the "Command Parser" could support more commands, for example,
 `"S screen1.png"` to save the canvas to a file named "screen1.png". If the
@@ -198,4 +198,4 @@ Run the following command in the command prompt / terminal:
 
 Then, open a web browser and visit:
 
-    http://127.0.0.1:6060/pkg/github.com/asukakenji/drawing-challenge/
+http://127.0.0.1:6060/pkg/github.com/asukakenji/drawing-challenge/
