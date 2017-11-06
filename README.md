@@ -77,13 +77,55 @@ https://github.com/asukakenji/drawing-challenge
 
 ### Architecture Diagram
 
-// Diagram //
+![Architecture Diagram](./images/ArchitectureDiagram.png)
+
+This project is very simple. In fact, it could be written using only the
+`main()` function. However, it is a good chance to demostrate how a bigger
+project could be designed.
+
+Instead of translating a command like `"C 20 4"` directly to the screen, it is
+parsed to a `Command` value, by the "Command Parser" and the "Color Parser", so
+that it could be manipulated programmatically.
+
+Then, the "Interpreter" applies the command on the existing canvas (color
+buffer) to result in a new canvas. It replaces the old canvas by the new one.
+Technically speaking, no new canvas is created. Only the state of the canvas
+changes.
+
+Finally, the new canvas is rendered on the screen (or any device) by the
+"Renderer".
+
+Note that any of the above entities: "Command Parser", "Color Parser",
+"Interpreter", and "Renderer", and even "Command", and "Canvas" could be
+developed by different developers, and could be updated independently.
+
+For instance, a canvas like this:
+
+    ----------------------
+    |             RRRRR  |
+    |BBBBBB       RGGGR  |
+    |     B       RRRRR  |
+    |     B              |
+    ----------------------
+
+could be rendered as shown above, or, with an appropriate "Renderer",
+as a sequence of `█` characters of different colors (`R` = red, `G` = green,
+`B` = blue).
+
+Like-wise, the "Command Parser" could support more commands, for example,
+`"S screen1.png"` to save the canvas to a file named "screen1.png". If the
+"Interpreter" does not understand this, it will handle it gracefully. Otherwise,
+it picks an appropriate "Renderer" to handle the request.
+
+Many other possibilities exist: non-buffer-based canvas, client-server model
+using WebSockets, 32-bit RGBA colors, and more. This architecture is flexible
+enough to handle them all.
 
 ### Package Diagram
 
 There are 6 library packages and 1 main package, as shown in the diagram:
 
-// Diagram //
+![Package Diagram](./PackageDiagram.png)
 
 Package common defines types and variables
 which are needed by other packages in the project.
@@ -108,7 +150,7 @@ and the BasicInterpreter type which implements it.
 
 ### Class Diagram
 
-// Diagram //
+![Class Diagram](./ClassDiagram.png)
 
 ## Design Documentation
 
@@ -119,10 +161,17 @@ printed again.
 
 This behavior is influenced by most existing REPL (Read-Eval-Print Loop).
 
+### EOF Behavior
+
+If the user sends a EOF character (`Ctrl-D` on UNIX, or `Ctrl-Z` on Windows),
+the program quits as if it receives a quit command.
+
+This behavior is influenced by most existing REPL (Read-Eval-Print Loop).
+
 ### New Canvas Behavior
 
-The new canvas function creates a new canvas. If a canvas already exists, it is
-destroyed and replaced by the new one.
+The new canvas function creates a new canvas. If a canvas already exists, it
+will be destroyed and replaced by the new one.
 
 Another option is to tell the user that a canvas is already created, and refuse
 to create a new one. However, this seems not robost enough since the user needs
@@ -131,7 +180,7 @@ to quit and execute the program again to create another canvas.
 ### Bucket Fill Behavior
 
 The bucket fill function fills the area enclosing (x, y). The pixels connecting
-to (x, y) having the same color that at (x, y) are replaced by c.
+to (x, y) having the same color as that at (x, y) are replaced by c.
 
 This behavior is influenced by most existing drawing software.
 
