@@ -125,7 +125,7 @@ enough to handle them all.
 
 There are 6 library packages and 1 main package, as shown in the diagram:
 
-![Package Diagram](./PackageDiagram.png)
+![Package Diagram](./images/PackageDiagram.png)
 
 Package common defines types and variables
 which are needed by other packages in the project.
@@ -150,7 +150,7 @@ and the BasicInterpreter type which implements it.
 
 ### Class Diagram
 
-![Class Diagram](./ClassDiagram.png)
+![Class Diagram](./images/ClassDiagram.png)
 
 ## Design Documentation
 
