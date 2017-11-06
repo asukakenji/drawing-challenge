@@ -111,8 +111,9 @@ For instance, a canvas like this:
     ----------------------
 
 could be rendered as shown above, or, with an appropriate "Renderer",
-as a sequence of `█` characters of different colors (`R` = red, `G` = green,
-`B` = blue) on a color terminal (using escape codes, for example).
+as a sequence of full block characters (`U+2588` = `█`) of different colors
+(`R` = red, `G` = green, `B` = blue) on a color terminal (using escape codes,
+for example).
 
 Like-wise, the "Command Parser" could support more commands, for example,
 `"S screen1.png"` to save the canvas to a file named "screen1.png". If the
