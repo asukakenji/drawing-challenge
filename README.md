@@ -81,25 +81,30 @@ https://github.com/asukakenji/drawing-challenge
 
 Click [here](https://drive.google.com/file/d/0B6JV6ICUUqcuYWpTQ1VaUnN2VEE/view?usp=sharing) for the full-size diagram.
 
-This project is very simple. In fact, it could be written using only the
-`main()` function. However, it is a good chance to demostrate how a bigger
-project could be designed.
+In fact, the requirements are so simple that the entire program could be fitted
+into a single `main()` function. However, this project aims to demostrate
+how larger projects could be architected.
 
-Instead of translating a command like `"C 20 4"` directly to the screen, it is
-parsed to a `Command` value, by the "Command Parser" and the "Color Parser", so
-that it could be manipulated programmatically.
+Instead of sending the result of a command directly to the screen, the input
+string (like `"C 20 4"`) is parsed to a `Command` value (or "object", in OOP
+terminology) by the "Command Parser" and the "Color Parser", in order to enable
+it to be manipulated programmatically easily.
 
-Then, the "Interpreter" applies the command on the existing canvas (color
+Then, the "Interpreter" applies the command to the existing canvas (color
 buffer) to result in a new canvas. It replaces the old canvas by the new one.
-Technically speaking, no new canvas is created. Only the state of the canvas
-changes.
+In the current implementation, no new canvas is created. Only the state of the
+canvas changes. However, in a functional programming setting, immutable data
+structures (persistent collections) could be used and a new, light-weight canvas
+could be created from the old one.
 
-Finally, the new canvas is rendered on the screen (or any device) by the
+Finally, the new canvas is rendered on the screen (or other devices) by the
 "Renderer".
 
-Note that any of the above entities: "Command Parser", "Color Parser",
-"Interpreter", and "Renderer", and even "Command", and "Canvas" could be
-developed by different developers, and could be updated independently.
+Note that any of the above entities - "Command Parser", "Color Parser",
+"Interpreter", and "Renderer", and even "Command", and "Canvas" - are loosely
+coupled. They are only related by their interfaces - not by their
+implementations. In short, they could be developed by different developers,
+and could be evolved independently.
 
 For instance, a canvas like this:
 
@@ -113,16 +118,20 @@ For instance, a canvas like this:
 could be rendered as shown above, or, with an appropriate "Renderer",
 as a sequence of full block characters (`U+2588` = `█`) of different colors
 (`R` = red, `G` = green, `B` = blue) on a color terminal (using escape codes,
-for example).
+for example), as shown below:
+
+![Color Terminal Render](./images/ColorTerminalRender.png)
+
+(Click [here](./images/color_terminal_render.sh) to see the source code of the above picture)
 
 Like-wise, the "Command Parser" could support more commands, for example,
-`"S screen1.png"` to save the canvas to a file named "screen1.png". If the
-"Interpreter" does not understand this, it will handle it gracefully. Otherwise,
-it picks an appropriate "Renderer" to handle the request.
+`"S screen1.png"` to save the canvas to a file named `"screen1.png"`. If the
+"Interpreter" does not understand this command, it would handle it gracefully.
+Otherwise, it could pick an appropriate "Renderer" to handle the request.
 
 Many other possibilities exist: non-buffer-based canvas, client-server model
-using WebSockets, 32-bit RGBA colors, and more. This architecture is flexible
-enough to handle them all.
+using WebSockets, 32-bit RGBA colors, and more. The architecture implemented in
+this project is flexible enough to handle them all.
 
 ### Package Diagram
 
@@ -135,23 +144,23 @@ Click [here](https://drive.google.com/file/d/0B6JV6ICUUqcuazU1RDV0MUNrMmM/view?u
 Package common defines types and variables
 which are needed by other packages in the project.
 
-Package color defines the Color interface,
-the ByteColor type which implements it, the Parser interface,
-and the ByteColorParser type which implements it.
+Package color defines the `Color` interface,
+the `ByteColor` type which implements it, the `Parser` interface,
+and the `ByteColorParser` type which implements it.
 
-Package canvas defines the Canvas interface,
-the BufferBasedCanvas interface,
-and the ByteColorBuffer type which implements it.
+Package canvas defines the `Canvas` interface,
+the `BufferBasedCanvas` interface,
+and the `ByteColorBuffer` type which implements it.
 
-Package command defines the Command interface,
-several types which implement it, the Parser interface,
-and the BasicParser type which implements it.
+Package command defines the `Command` interface,
+several types which implement it, the `Parser` interface,
+and the `BasicParser` type which implements it.
 
-Package renderer defines the Renderer interface,
-and the WriterRenderer type which implements it.
+Package renderer defines the `Renderer` interface,
+and the `WriterRenderer` type which implements it.
 
-Package interpreter defines the Interpreter interface,
-and the BasicInterpreter type which implements it.
+Package interpreter defines the `Interpreter` interface,
+and the `BasicInterpreter` type which implements it.
 
 ### Class Diagram
 
