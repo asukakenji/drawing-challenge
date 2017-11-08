@@ -200,7 +200,13 @@ to (x, y) having the same color as that at (x, y) are replaced by c.
 
 This behavior is influenced by most existing drawing software.
 
-## API Documentation
+## API Documentation (From GoDoc, Preferred Way)
+
+Visit the following URL:
+
+https://godoc.org/github.com/asukakenji/drawing-challenge
+
+## API Documentation (From Localhost)
 
 Run the following command in the command prompt / terminal:
 
