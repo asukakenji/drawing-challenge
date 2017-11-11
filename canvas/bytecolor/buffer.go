@@ -1,4 +1,4 @@
-// Package bytecolor defines the Buffer,
+// Package bytecolor defines the Buffer type,
 // which implements the canvas.BufferBasedCanvas interface.
 package bytecolor
 
