@@ -10,25 +10,9 @@ import (
 	bc "github.com/asukakenji/drawing-challenge/canvas/bytecolor"
 	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/command"
-	"github.com/asukakenji/drawing-challenge/interpreter"
+	"github.com/asukakenji/drawing-challenge/interpreter/simple"
 	"github.com/asukakenji/drawing-challenge/renderer/writer"
 )
-
-// SimpleEnvironment is a simple environment for the interpreter.
-// It implements the interpreter.CanvasContainer interface.
-type SimpleEnvironment struct {
-	cnv canvas.Canvas
-}
-
-// Canvas returns the contained canvas.Canvas.
-func (env *SimpleEnvironment) Canvas() canvas.Canvas {
-	return env.cnv
-}
-
-// SetCanvas set the contained canvas.Canvas.
-func (env *SimpleEnvironment) SetCanvas(cnv canvas.Canvas) {
-	env.cnv = cnv
-}
 
 const (
 	// DefaultBGColorString is the default value for bgColorString.
@@ -73,16 +57,6 @@ func main() {
 	}
 	fgColor := _fgColor.(bytecolor.Color)
 
-	// Setup environment
-	env := &SimpleEnvironment{}
-
-	// Setup device (standard output)
-	dev, err := writer.NewRenderer(os.Stdout)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
 	// Setup command parser
 	commandParser, err := command.NewBasicParser(colorParser.ParseColor)
 	if err != nil {
@@ -91,9 +65,23 @@ func main() {
 	}
 
 	// Setup interpreter
-	interp, err := interpreter.NewBasicInterpreter(func(width, height int) (canvas.Canvas, error) {
+	interp, err := simple.NewInterpreter(func(width, height int) (canvas.Canvas, error) {
 		return bc.NewBuffer(width, height, bgColor, fgColor)
 	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Setup renderer (standard output)
+	rdr, err := writer.NewRenderer(os.Stdout)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Setup environment
+	env, err := simple.NewEnvironment(rdr)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -123,9 +111,10 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			}
-			if cnv := env.Canvas(); cnv != nil {
-				dev.Render(cnv)
-			}
+			//TODO: Remove this!
+			// if cnv := env.Canvas(); cnv != nil {
+			// 	rdr.Render(cnv)
+			// }
 		}
 	}
 }
