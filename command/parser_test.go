@@ -4,13 +4,13 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/asukakenji/drawing-challenge/color"
+	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
 func TestNewBasicParser(t *testing.T) {
-	colorParser := &color.ByteColorParser{
-		DefaultColor: color.ByteColor(' '),
+	colorParser := &bytecolor.Parser{
+		DefaultColor: bytecolor.Color(' '),
 	}
 
 	_, err := NewBasicParser(colorParser.ParseColor)
@@ -25,8 +25,8 @@ func TestNewBasicParser(t *testing.T) {
 }
 
 func TestBasicParser_ParseCommand(t *testing.T) {
-	colorParser := &color.ByteColorParser{
-		DefaultColor: color.ByteColor(' '),
+	colorParser := &bytecolor.Parser{
+		DefaultColor: bytecolor.Color(' '),
 	}
 	commandParser, err := NewBasicParser(colorParser.ParseColor)
 	if err != nil {
@@ -43,7 +43,7 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 		{"L 1 2 6 2", DrawLineCommand{1, 2, 6, 2}},                   // Example 2
 		{"L 6 3 6 4", DrawLineCommand{6, 3, 6, 4}},                   // Example 3
 		{"R 14 1 18 3", DrawRectCommand{14, 1, 18, 3}},               // Example 4
-		{"B 10 3 o", BucketFillCommand{10, 3, color.ByteColor('o')}}, // Example 5
+		{"B 10 3 o", BucketFillCommand{10, 3, bytecolor.Color('o')}}, // Example 5
 		{"Q", QuitCommand{}},                                         // Example 6
 	}
 	for _, c := range casesPos {
