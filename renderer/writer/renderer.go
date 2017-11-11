@@ -41,13 +41,13 @@ func NewRenderer(writer io.Writer) (*Renderer, error) {
 }
 
 // renderTopBottomBorder renders the top / buttom border of the canvas.
-func (r *Renderer) renderTopBottomBorder(width int) {
+func (rdr *Renderer) renderTopBottomBorder(width int) {
 	// NOTE: Didn't use (width + 2) to prevent potential overflow
-	fmt.Fprint(r.writer, "-")
+	fmt.Fprint(rdr.writer, "-")
 	for i := 0; i < width; i++ {
-		fmt.Fprint(r.writer, "-")
+		fmt.Fprint(rdr.writer, "-")
 	}
-	fmt.Fprintln(r.writer, "-")
+	fmt.Fprintln(rdr.writer, "-")
 }
 
 // Render renders cnv.
@@ -64,19 +64,19 @@ func (r *Renderer) renderTopBottomBorder(width int) {
 // common.ErrColorNotSupported:
 // Will be returned if a color inside cnv is not supported by this renderer.
 //
-func (r *Renderer) Render(cnv canvas.Canvas) error {
+func (rdr *Renderer) Render(cnv canvas.Canvas) error {
 	bbcnv, ok := cnv.(canvas.BufferBasedCanvas)
 	if !ok {
 		return common.ErrCanvasNotSupported
 	}
 	width, height := bbcnv.Dimensions()
-	r.renderTopBottomBorder(width)
+	rdr.renderTopBottomBorder(width)
 	if bcbcnv, ok := bbcnv.(*bc.Buffer); ok {
 		// Render the canvas row-by-row if it is a ByteColorBuffer.
 		pixels := bcbcnv.Pixels()
 		offset := 0
 		for j := 0; j < height; j++ {
-			fmt.Fprintf(r.writer, "|%s|\n", pixels[offset:offset+width])
+			fmt.Fprintf(rdr.writer, "|%s|\n", pixels[offset:offset+width])
 			offset += width
 		}
 	} else {
@@ -85,7 +85,7 @@ func (r *Renderer) Render(cnv canvas.Canvas) error {
 			ToByte() byte
 		}
 		for j := 0; j < height; j++ {
-			fmt.Fprint(r.writer, '|')
+			fmt.Fprint(rdr.writer, '|')
 			for i := 0; i < width; i++ {
 				c, err := bbcnv.At(i, j)
 				if err != nil {
@@ -93,17 +93,17 @@ func (r *Renderer) Render(cnv canvas.Canvas) error {
 					panic(err)
 				}
 				if c2, ok := c.(bytecolor.Color); ok {
-					fmt.Fprint(r.writer, c2)
+					fmt.Fprint(rdr.writer, c2)
 				} else if c3, ok := c.(toByter); ok {
-					fmt.Fprint(r.writer, c3.ToByte())
+					fmt.Fprint(rdr.writer, c3.ToByte())
 				} else {
 					return common.ErrColorNotSupported
 				}
 			}
-			fmt.Fprintln(r.writer, '|')
+			fmt.Fprintln(rdr.writer, '|')
 		}
 	}
-	r.renderTopBottomBorder(width)
-	fmt.Fprintln(r.writer)
+	rdr.renderTopBottomBorder(width)
+	fmt.Fprintln(rdr.writer)
 	return nil
 }
