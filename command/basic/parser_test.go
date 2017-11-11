@@ -1,10 +1,11 @@
-package command
+package basic
 
 import (
 	"reflect"
 	"testing"
 
 	"github.com/asukakenji/drawing-challenge/color/bytecolor"
+	"github.com/asukakenji/drawing-challenge/command"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
@@ -13,12 +14,12 @@ func TestNewBasicParser(t *testing.T) {
 		DefaultColor: bytecolor.Color(' '),
 	}
 
-	_, err := NewBasicParser(colorParser.ParseColor)
+	_, err := NewParser(colorParser.ParseColor)
 	if err != nil {
 		t.Errorf("Expected: err == nil, Got: %#v", err)
 	}
 
-	_, err = NewBasicParser(nil)
+	_, err = NewParser(nil)
 	if err != common.ErrNilPointer {
 		t.Errorf("Expected: err == %#v, Got: %#v", common.ErrNilPointer, err)
 	}
@@ -28,7 +29,7 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 	colorParser := &bytecolor.Parser{
 		DefaultColor: bytecolor.Color(' '),
 	}
-	commandParser, err := NewBasicParser(colorParser.ParseColor)
+	commandParser, err := NewParser(colorParser.ParseColor)
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +37,7 @@ func TestBasicParser_ParseCommand(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		s       string
-		command Command
+		command command.Command
 	}{
 		{"", EmptyCommand{}},
 		{"C 20 4", NewCanvasCommand{20, 4}},                          // Example 1

@@ -9,7 +9,7 @@ import (
 	"github.com/asukakenji/drawing-challenge/canvas"
 	bc "github.com/asukakenji/drawing-challenge/canvas/bytecolor"
 	"github.com/asukakenji/drawing-challenge/color/bytecolor"
-	"github.com/asukakenji/drawing-challenge/command"
+	"github.com/asukakenji/drawing-challenge/command/basic"
 	"github.com/asukakenji/drawing-challenge/interpreter/simple"
 	"github.com/asukakenji/drawing-challenge/renderer/writer"
 )
@@ -58,7 +58,7 @@ func main() {
 	fgColor := _fgColor.(bytecolor.Color)
 
 	// Setup command parser
-	commandParser, err := command.NewBasicParser(colorParser.ParseColor)
+	commandParser, err := basic.NewParser(colorParser.ParseColor)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -102,19 +102,15 @@ func main() {
 		}
 
 		switch cmd := cmd.(type) {
-		case command.EmptyCommand:
+		case basic.EmptyCommand:
 			continue
-		case command.QuitCommand:
+		case basic.QuitCommand:
 			return
 		default:
 			err = interp.Interpret(env, cmd)
 			if err != nil {
 				fmt.Println(err)
 			}
-			//TODO: Remove this!
-			// if cnv := env.Canvas(); cnv != nil {
-			// 	rdr.Render(cnv)
-			// }
 		}
 	}
 }

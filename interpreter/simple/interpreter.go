@@ -3,6 +3,7 @@ package simple
 import (
 	"github.com/asukakenji/drawing-challenge/canvas"
 	"github.com/asukakenji/drawing-challenge/command"
+	"github.com/asukakenji/drawing-challenge/command/basic"
 	"github.com/asukakenji/drawing-challenge/common"
 	"github.com/asukakenji/drawing-challenge/interpreter"
 	"github.com/asukakenji/drawing-challenge/renderer"
@@ -73,14 +74,14 @@ func (interp *Interpreter) Interpret(env interface{}, cmd command.Command) error
 		return common.ErrEnvironmentNotSupported
 	}
 	switch cmd := cmd.(type) {
-	case command.NewCanvasCommand:
+	case basic.NewCanvasCommand:
 		cnv, err := interp.newCanvasFunc(cmd.Width, cmd.Height)
 		if err != nil {
 			return err
 		}
 		cc.SetCanvas(cnv)
 		rdr.Render(cnv)
-	case command.DrawLineCommand:
+	case basic.DrawLineCommand:
 		cnv := cc.Canvas()
 		if cnv == nil {
 			return common.ErrCanvasNotCreated
@@ -90,7 +91,7 @@ func (interp *Interpreter) Interpret(env interface{}, cmd command.Command) error
 			return err
 		}
 		rdr.Render(cnv)
-	case command.DrawRectCommand:
+	case basic.DrawRectCommand:
 		cnv := cc.Canvas()
 		if cnv == nil {
 			return common.ErrCanvasNotCreated
@@ -100,7 +101,7 @@ func (interp *Interpreter) Interpret(env interface{}, cmd command.Command) error
 			return err
 		}
 		rdr.Render(cnv)
-	case command.BucketFillCommand:
+	case basic.BucketFillCommand:
 		cnv := cc.Canvas()
 		if cnv == nil {
 			return common.ErrCanvasNotCreated

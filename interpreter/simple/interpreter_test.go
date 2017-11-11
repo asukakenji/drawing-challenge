@@ -10,6 +10,7 @@ import (
 	"github.com/asukakenji/drawing-challenge/color"
 	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/command"
+	"github.com/asukakenji/drawing-challenge/command/basic"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
@@ -39,7 +40,7 @@ type mockCanvas struct {
 
 func NewMockCanvas(width, height int) (canvas.Canvas, error) {
 	commands := list.New()
-	commands.PushBack(command.NewCanvasCommand{Width: width, Height: height})
+	commands.PushBack(basic.NewCanvasCommand{Width: width, Height: height})
 	return &mockCanvas{
 		width:    width,
 		height:   height,
@@ -52,17 +53,17 @@ func (mc *mockCanvas) Dimensions() (int, int) {
 }
 
 func (mc *mockCanvas) DrawLine(x1, y1, x2, y2 int) error {
-	mc.commands.PushBack(command.DrawLineCommand{X1: x1, Y1: y1, X2: x2, Y2: y2})
+	mc.commands.PushBack(basic.DrawLineCommand{X1: x1, Y1: y1, X2: x2, Y2: y2})
 	return nil
 }
 
 func (mc *mockCanvas) DrawRect(x1, y1, x2, y2 int) error {
-	mc.commands.PushBack(command.DrawRectCommand{X1: x1, Y1: y1, X2: x2, Y2: y2})
+	mc.commands.PushBack(basic.DrawRectCommand{X1: x1, Y1: y1, X2: x2, Y2: y2})
 	return nil
 }
 
 func (mc *mockCanvas) BucketFill(x, y int, c color.Color) error {
-	mc.commands.PushBack(command.BucketFillCommand{X: x, Y: y, C: c})
+	mc.commands.PushBack(basic.BucketFillCommand{X: x, Y: y, C: c})
 	return nil
 }
 
@@ -91,11 +92,11 @@ func TestInterpreter_Interpret(t *testing.T) {
 		cmd    command.Command
 		result command.Command
 	}{
-		{command.NewCanvasCommand{Width: 20, Height: 4}, command.NewCanvasCommand{Width: 20, Height: 4}},                                  // Example 1
-		{command.DrawLineCommand{X1: 1, Y1: 2, X2: 6, Y2: 2}, command.DrawLineCommand{X1: 0, Y1: 1, X2: 5, Y2: 1}},                        // Example 2
-		{command.DrawLineCommand{X1: 6, Y1: 3, X2: 6, Y2: 4}, command.DrawLineCommand{X1: 5, Y1: 2, X2: 5, Y2: 3}},                        // Example 3
-		{command.DrawRectCommand{X1: 14, Y1: 1, X2: 18, Y2: 3}, command.DrawRectCommand{X1: 13, Y1: 0, X2: 17, Y2: 2}},                    // Example 4
-		{command.BucketFillCommand{X: 10, Y: 3, C: bytecolor.Color('o')}, command.BucketFillCommand{X: 9, Y: 2, C: bytecolor.Color('o')}}, // Example 5
+		{basic.NewCanvasCommand{Width: 20, Height: 4}, basic.NewCanvasCommand{Width: 20, Height: 4}},                                  // Example 1
+		{basic.DrawLineCommand{X1: 1, Y1: 2, X2: 6, Y2: 2}, basic.DrawLineCommand{X1: 0, Y1: 1, X2: 5, Y2: 1}},                        // Example 2
+		{basic.DrawLineCommand{X1: 6, Y1: 3, X2: 6, Y2: 4}, basic.DrawLineCommand{X1: 5, Y1: 2, X2: 5, Y2: 3}},                        // Example 3
+		{basic.DrawRectCommand{X1: 14, Y1: 1, X2: 18, Y2: 3}, basic.DrawRectCommand{X1: 13, Y1: 0, X2: 17, Y2: 2}},                    // Example 4
+		{basic.BucketFillCommand{X: 10, Y: 3, C: bytecolor.Color('o')}, basic.BucketFillCommand{X: 9, Y: 2, C: bytecolor.Color('o')}}, // Example 5
 	}
 	for _, c := range casesPos {
 		err = interpPos.Interpret(envPos, c.cmd)
@@ -124,18 +125,18 @@ func TestInterpreter_Interpret(t *testing.T) {
 		err error
 	}{
 		// No Canvas
-		{command.EmptyCommand{}, common.ErrCommandNotSupported},
-		{command.NewCanvasCommand{Width: -1, Height: -1}, common.ErrWidthOrHeightNotPositive},
-		{command.DrawLineCommand{X1: 1, Y1: 2, X2: 6, Y2: 2}, common.ErrCanvasNotCreated},
-		{command.DrawLineCommand{X1: 6, Y1: 3, X2: 6, Y2: 4}, common.ErrCanvasNotCreated},
-		{command.DrawRectCommand{X1: 14, Y1: 1, X2: 18, Y2: 3}, common.ErrCanvasNotCreated},
-		{command.BucketFillCommand{X: 10, Y: 3, C: bytecolor.Color('o')}, common.ErrCanvasNotCreated},
-		{command.QuitCommand{}, common.ErrCommandNotSupported},
+		{basic.EmptyCommand{}, common.ErrCommandNotSupported},
+		{basic.NewCanvasCommand{Width: -1, Height: -1}, common.ErrWidthOrHeightNotPositive},
+		{basic.DrawLineCommand{X1: 1, Y1: 2, X2: 6, Y2: 2}, common.ErrCanvasNotCreated},
+		{basic.DrawLineCommand{X1: 6, Y1: 3, X2: 6, Y2: 4}, common.ErrCanvasNotCreated},
+		{basic.DrawRectCommand{X1: 14, Y1: 1, X2: 18, Y2: 3}, common.ErrCanvasNotCreated},
+		{basic.BucketFillCommand{X: 10, Y: 3, C: bytecolor.Color('o')}, common.ErrCanvasNotCreated},
+		{basic.QuitCommand{}, common.ErrCommandNotSupported},
 		// With Canvas
-		{command.NewCanvasCommand{Width: 20, Height: 4}, nil},
-		{command.DrawLineCommand{X1: -1, Y1: -1, X2: -1, Y2: -1}, common.ErrPointOutsideCanvas},
-		{command.DrawRectCommand{X1: -1, Y1: -1, X2: -1, Y2: -1}, common.ErrPointOutsideCanvas},
-		{command.BucketFillCommand{X: -1, Y: -1, C: bytecolor.Color('o')}, common.ErrPointOutsideCanvas},
+		{basic.NewCanvasCommand{Width: 20, Height: 4}, nil},
+		{basic.DrawLineCommand{X1: -1, Y1: -1, X2: -1, Y2: -1}, common.ErrPointOutsideCanvas},
+		{basic.DrawRectCommand{X1: -1, Y1: -1, X2: -1, Y2: -1}, common.ErrPointOutsideCanvas},
+		{basic.BucketFillCommand{X: -1, Y: -1, C: bytecolor.Color('o')}, common.ErrPointOutsideCanvas},
 	}
 	for _, c := range casesNeg {
 		err = interpNeg.Interpret(envNeg, c.cmd)
@@ -144,7 +145,7 @@ func TestInterpreter_Interpret(t *testing.T) {
 		}
 	}
 
-	err = interpNeg.Interpret(0, command.EmptyCommand{})
+	err = interpNeg.Interpret(0, basic.EmptyCommand{})
 	if err != common.ErrEnvironmentNotSupported {
 		t.Errorf("Case: env == 0, Expected: %#v, Got: %#v", common.ErrEnvironmentNotSupported, err)
 	}
