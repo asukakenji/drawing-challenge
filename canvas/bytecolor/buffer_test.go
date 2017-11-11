@@ -1,43 +1,44 @@
-package canvas
+package bytecolor
 
 import (
 	"reflect"
 	"testing"
 
 	"github.com/asukakenji/drawing-challenge/color"
+	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-func TestNewByteColorBuffer(t *testing.T) {
+func TestNewBuffer(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
-		pixels  []color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
+		pixels  []bytecolor.Color
 	}{
-		{1, 1, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' '}},
-		{1, 2, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' '}},
-		{1, 3, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' '}},
-		{1, 4, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' '}},
-		{1, 5, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' '}},
-		{1, 6, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 7, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 8, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 9, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 10, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 11, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 12, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 13, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 14, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 15, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{1, 16, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' '}},
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 1, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' '}},
+		{1, 2, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' '}},
+		{1, 3, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' '}},
+		{1, 4, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' '}},
+		{1, 5, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' '}},
+		{1, 6, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 7, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 8, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 9, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 10, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 11, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 12, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 13, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 14, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 15, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{1, 16, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' '}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', ' '}},
 	}
 	for _, c := range casesPos {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
 			t.Errorf("Case: (%d, %d, %#v, %#v), Expected: err == nil, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, err)
 		}
@@ -50,34 +51,34 @@ func TestNewByteColorBuffer(t *testing.T) {
 	casesNeg := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		err     error
 	}{
-		{0, 1, color.ByteColor(' '), color.ByteColor('x'), common.ErrWidthOrHeightNotPositive},
-		{1, 0, color.ByteColor(' '), color.ByteColor('x'), common.ErrWidthOrHeightNotPositive},
+		{0, 1, bytecolor.Color(' '), bytecolor.Color('x'), common.ErrWidthOrHeightNotPositive},
+		{1, 0, bytecolor.Color(' '), bytecolor.Color('x'), common.ErrWidthOrHeightNotPositive},
 	}
 	for _, c := range casesNeg {
-		_, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		_, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != c.err {
 			t.Errorf("Case: (%d, %d, %#v, %#v), Expected: %#v, Got: %#v", c.w, c.h, c.bgColor, c.fgColor, c.err, err)
 		}
 	}
 }
 
-func TestByteColorBuffer_Dimensions(t *testing.T) {
+func TestBuffer_Dimensions(t *testing.T) {
 	cases := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 	}{
-		{24, 42, color.ByteColor(' '), color.ByteColor('x')},
+		{24, 42, bytecolor.Color(' '), bytecolor.Color('x')},
 	}
 	for _, c := range cases {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, err)
 		}
 		w, h := cnv.Dimensions()
 		if w != c.w || h != c.h {
@@ -87,42 +88,42 @@ func TestByteColorBuffer_Dimensions(t *testing.T) {
 }
 
 // This type is created for testing purpose only
-type byteColor byte
+type dummyColor byte
 
-func (c1 byteColor) Equals(c2 color.Color) bool {
+func (c1 dummyColor) Equals(c2 color.Color) bool {
 	return true
 }
 
-func TestByteColorBuffer_Set(t *testing.T) {
+func TestBuffer_Set(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x       int
 		y       int
 		c       color.Color
-		pixels  []color.ByteColor
+		pixels  []bytecolor.Color
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, color.ByteColor('x'), []color.ByteColor{'x', ' ', ' ', ' ', ' ', ' '}},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 0, color.ByteColor('x'), []color.ByteColor{' ', 'x', ' ', ' ', ' ', ' '}},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 1, color.ByteColor('x'), []color.ByteColor{' ', ' ', 'x', ' ', ' ', ' '}},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', 'x', ' ', ' '}},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 2, color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', 'x', ' '}},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 2, color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', 'x'}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, bytecolor.Color('x'), []bytecolor.Color{'x', ' ', ' ', ' ', ' ', ' '}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 0, bytecolor.Color('x'), []bytecolor.Color{' ', 'x', ' ', ' ', ' ', ' '}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 1, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', 'x', ' ', ' ', ' '}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', 'x', ' ', ' '}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 2, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', 'x', ' '}},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 2, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', 'x'}},
 
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), 0, 0, color.ByteColor('x'), []color.ByteColor{'x', ' ', ' ', ' ', ' ', ' '}},
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), 1, 0, color.ByteColor('x'), []color.ByteColor{' ', 'x', ' ', ' ', ' ', ' '}},
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), 2, 0, color.ByteColor('x'), []color.ByteColor{' ', ' ', 'x', ' ', ' ', ' '}},
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), 0, 1, color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', 'x', ' ', ' '}},
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', 'x', ' '}},
-		{3, 2, color.ByteColor(' '), color.ByteColor('x'), 2, 1, color.ByteColor('x'), []color.ByteColor{' ', ' ', ' ', ' ', ' ', 'x'}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, bytecolor.Color('x'), []bytecolor.Color{'x', ' ', ' ', ' ', ' ', ' '}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), 1, 0, bytecolor.Color('x'), []bytecolor.Color{' ', 'x', ' ', ' ', ' ', ' '}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), 2, 0, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', 'x', ' ', ' ', ' '}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), 0, 1, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', 'x', ' ', ' '}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', 'x', ' '}},
+		{3, 2, bytecolor.Color(' '), bytecolor.Color('x'), 2, 1, bytecolor.Color('x'), []bytecolor.Color{' ', ' ', ' ', ' ', ' ', 'x'}},
 	}
 	for _, c := range casesPos {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != nil {
@@ -137,23 +138,23 @@ func TestByteColorBuffer_Set(t *testing.T) {
 	casesNeg := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x       int
 		y       int
 		c       color.Color
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, color.ByteColor('x'), common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, color.ByteColor('x'), common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, color.ByteColor('x'), common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, color.ByteColor('x'), common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, byteColor('x'), common.ErrColorTypeNotSupported},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), -1, 0, bytecolor.Color('x'), common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, -1, bytecolor.Color('x'), common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 2, 0, bytecolor.Color('x'), common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 3, bytecolor.Color('x'), common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, dummyColor('x'), common.ErrColorTypeNotSupported},
 	}
 	for _, c := range casesNeg {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != c.err {
@@ -162,26 +163,26 @@ func TestByteColorBuffer_Set(t *testing.T) {
 	}
 }
 
-func TestByteColorBuffer_At(t *testing.T) {
+func TestBuffer_At(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x       int
 		y       int
-		c       color.ByteColor
+		c       bytecolor.Color
 		xAt     int
 		yAt     int
-		cAt     color.ByteColor
+		cAt     bytecolor.Color
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, 0, color.ByteColor(' ')},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), 0, 0, bytecolor.Color(' ')},
 	}
 	for _, c := range casesPos {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != nil {
@@ -200,24 +201,24 @@ func TestByteColorBuffer_At(t *testing.T) {
 	casesNeg := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x       int
 		y       int
-		c       color.ByteColor
+		c       bytecolor.Color
 		xAt     int
 		yAt     int
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), -1, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, -1, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 2, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 1, 1, color.ByteColor('x'), 0, 3, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), -1, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), 0, -1, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), 2, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 1, 1, bytecolor.Color('x'), 0, 3, common.ErrPointOutsideCanvas},
 	}
 	for _, c := range casesNeg {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %#v, %d, %d), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x, c.y, c.c, c.xAt, c.yAt, err)
 		}
 		err = cnv.Set(c.x, c.y, c.c)
 		if err != nil {
@@ -230,38 +231,38 @@ func TestByteColorBuffer_At(t *testing.T) {
 	}
 }
 
-func TestByteColorBuffer_DrawLine(t *testing.T) {
+func TestBuffer_DrawLine(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x1      int
 		y1      int
 		x2      int
 		y2      int
-		pixels  []color.ByteColor
+		pixels  []bytecolor.Color
 	}{
-		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 0, 1, 5, 1, []color.ByteColor{
+		{20, 4, bytecolor.Color(' '), bytecolor.Color('x'), 0, 1, 5, 1, []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			'x', 'x', 'x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 		}}, // Example 2
-		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 5, 2, 5, 3, []color.ByteColor{
+		{20, 4, bytecolor.Color(' '), bytecolor.Color('x'), 5, 2, 5, 3, []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 		}}, // Example 3
-		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 5, 1, 0, 1, []color.ByteColor{
+		{20, 4, bytecolor.Color(' '), bytecolor.Color('x'), 5, 1, 0, 1, []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			'x', 'x', 'x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 		}}, // Example 2 (points in reversed order)
-		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 5, 3, 5, 2, []color.ByteColor{
+		{20, 4, bytecolor.Color(' '), bytecolor.Color('x'), 5, 3, 5, 2, []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -269,9 +270,9 @@ func TestByteColorBuffer_DrawLine(t *testing.T) {
 		}}, // Example 3 (points in reverse order)
 	}
 	for _, c := range casesPos {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
 		}
 		err = cnv.DrawLine(c.x1, c.y1, c.x2, c.y2)
 		if err != nil {
@@ -286,28 +287,28 @@ func TestByteColorBuffer_DrawLine(t *testing.T) {
 	casesNeg := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x1      int
 		y1      int
 		x2      int
 		y2      int
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 1, 1, common.ErrLineNotHorizontalOrVertical},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), -1, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, -1, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 2, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 3, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, -1, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 0, -1, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 2, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 0, 3, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 1, 1, common.ErrLineNotHorizontalOrVertical},
 	}
 	for _, c := range casesNeg {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
 		}
 		err = cnv.DrawLine(c.x1, c.y1, c.x2, c.y2)
 		if err != c.err {
@@ -316,26 +317,26 @@ func TestByteColorBuffer_DrawLine(t *testing.T) {
 	}
 }
 
-func TestByteColorBuffer_DrawRect(t *testing.T) {
+func TestBuffer_DrawRect(t *testing.T) {
 	// Positive Cases
 	casesPos := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x1      int
 		y1      int
 		x2      int
 		y2      int
-		pixels  []color.ByteColor
+		pixels  []bytecolor.Color
 	}{
-		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 13, 0, 17, 2, []color.ByteColor{
+		{20, 4, bytecolor.Color(' '), bytecolor.Color('x'), 13, 0, 17, 2, []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
 		}}, // Example 4
-		{20, 4, color.ByteColor(' '), color.ByteColor('x'), 17, 2, 13, 0, []color.ByteColor{
+		{20, 4, bytecolor.Color(' '), bytecolor.Color('x'), 17, 2, 13, 0, []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
@@ -343,9 +344,9 @@ func TestByteColorBuffer_DrawRect(t *testing.T) {
 		}}, // Example 4 (points in reverse order)
 	}
 	for _, c := range casesPos {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
 		}
 		err = cnv.DrawRect(c.x1, c.y1, c.x2, c.y2)
 		if err != nil {
@@ -360,27 +361,27 @@ func TestByteColorBuffer_DrawRect(t *testing.T) {
 	casesNeg := []struct {
 		w       int
 		h       int
-		bgColor color.ByteColor
-		fgColor color.ByteColor
+		bgColor bytecolor.Color
+		fgColor bytecolor.Color
 		x1      int
 		y1      int
 		x2      int
 		y2      int
 		err     error
 	}{
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), -1, 0, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, -1, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 2, 0, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 3, 0, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, -1, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, -1, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 2, 0, common.ErrPointOutsideCanvas},
-		{2, 3, color.ByteColor(' '), color.ByteColor('x'), 0, 0, 0, 3, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), -1, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, -1, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 2, 0, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 3, 0, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, -1, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 0, -1, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 2, 0, common.ErrPointOutsideCanvas},
+		{2, 3, bytecolor.Color(' '), bytecolor.Color('x'), 0, 0, 0, 3, common.ErrPointOutsideCanvas},
 	}
 	for _, c := range casesNeg {
-		cnv, err := NewByteColorBuffer(c.w, c.h, c.bgColor, c.fgColor)
+		cnv, err := NewBuffer(c.w, c.h, c.bgColor, c.fgColor)
 		if err != nil {
-			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewByteColorBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
+			t.Errorf("Case: (%d, %d, %#v, %#v, %d, %d, %d, %d), NewBuffer returned err != nil: %#v", c.w, c.h, c.bgColor, c.fgColor, c.x1, c.y1, c.x2, c.y2, err)
 		}
 		err = cnv.DrawRect(c.x1, c.y1, c.x2, c.y2)
 		if err != c.err {
@@ -389,10 +390,10 @@ func TestByteColorBuffer_DrawRect(t *testing.T) {
 	}
 }
 
-func TestByteColorBuffer_BucketFill(t *testing.T) {
-	cnv, err := NewByteColorBuffer(20, 4, color.ByteColor(' '), color.ByteColor('x'))
+func TestBuffer_BucketFill(t *testing.T) {
+	cnv, err := NewBuffer(20, 4, bytecolor.Color(' '), bytecolor.Color('x'))
 	if err != nil {
-		t.Errorf("NewByteColorBuffer returned err != nil: %#v", err)
+		t.Errorf("NewBuffer returned err != nil: %#v", err)
 	}
 	err = cnv.DrawLine(0, 1, 5, 1) // Example 2
 	if err != nil {
@@ -412,33 +413,33 @@ func TestByteColorBuffer_BucketFill(t *testing.T) {
 		x      int
 		y      int
 		c      color.Color
-		pixels []color.ByteColor
+		pixels []bytecolor.Color
 	}{
-		{9, 2, color.ByteColor('o'), []color.ByteColor{
+		{9, 2, bytecolor.Color('o'), []bytecolor.Color{
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			'x', 'x', 'x', 'x', 'x', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
 			' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			' ', ' ', ' ', ' ', ' ', 'x', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
 		}}, // Example 5
-		{0, 1, color.ByteColor('v'), []color.ByteColor{
+		{0, 1, bytecolor.Color('v'), []bytecolor.Color{
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			'v', 'v', 'v', 'v', 'v', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
 			' ', ' ', ' ', ' ', ' ', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			' ', ' ', ' ', ' ', ' ', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
 		}},
-		{3, 3, color.ByteColor('o'), []color.ByteColor{
+		{3, 3, bytecolor.Color('o'), []bytecolor.Color{
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			'v', 'v', 'v', 'v', 'v', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
 			'o', 'o', 'o', 'o', 'o', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			'o', 'o', 'o', 'o', 'o', 'v', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
 		}},
-		{5, 1, color.ByteColor('o'), []color.ByteColor{
+		{5, 1, bytecolor.Color('o'), []bytecolor.Color{
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', ' ', ' ', ' ', 'x', 'o', 'o',
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'o',
 			'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
 		}},
-		{2, 2, color.ByteColor(' '), []color.ByteColor{
+		{2, 2, bytecolor.Color(' '), []bytecolor.Color{
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', 'x', ' ', ' ',
 			' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', ' ',
@@ -462,11 +463,11 @@ func TestByteColorBuffer_BucketFill(t *testing.T) {
 		c   color.Color
 		err error
 	}{
-		{-1, 0, color.ByteColor('o'), common.ErrPointOutsideCanvas},
-		{0, -1, color.ByteColor('o'), common.ErrPointOutsideCanvas},
-		{20, 0, color.ByteColor('o'), common.ErrPointOutsideCanvas},
-		{0, 4, color.ByteColor('o'), common.ErrPointOutsideCanvas},
-		{0, 0, byteColor('o'), common.ErrColorTypeNotSupported},
+		{-1, 0, bytecolor.Color('o'), common.ErrPointOutsideCanvas},
+		{0, -1, bytecolor.Color('o'), common.ErrPointOutsideCanvas},
+		{20, 0, bytecolor.Color('o'), common.ErrPointOutsideCanvas},
+		{0, 4, bytecolor.Color('o'), common.ErrPointOutsideCanvas},
+		{0, 0, dummyColor('o'), common.ErrColorTypeNotSupported},
 	}
 	for _, c := range casesNeg {
 		err = cnv.BucketFill(c.x, c.y, c.c)

@@ -1,3 +1,5 @@
+// Package canvas defines the Canvas interface and
+// the BufferBasedCanvas interface.
 package canvas
 
 import "github.com/asukakenji/drawing-challenge/color"

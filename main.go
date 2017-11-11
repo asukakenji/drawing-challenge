@@ -7,10 +7,11 @@ import (
 	"os"
 
 	"github.com/asukakenji/drawing-challenge/canvas"
-	"github.com/asukakenji/drawing-challenge/color"
+	bc "github.com/asukakenji/drawing-challenge/canvas/bytecolor"
+	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/command"
 	"github.com/asukakenji/drawing-challenge/interpreter"
-	"github.com/asukakenji/drawing-challenge/renderer"
+	"github.com/asukakenji/drawing-challenge/renderer/writer"
 )
 
 // SimpleEnvironment is a simple environment for the interpreter.
@@ -52,8 +53,8 @@ func main() {
 	flag.Parse()
 
 	// Setup color parser
-	colorParser := &color.ByteColorParser{
-		DefaultColor: color.ByteColor(' '),
+	colorParser := &bytecolor.Parser{
+		DefaultColor: bytecolor.Color(' '),
 	}
 
 	// Setup background color
@@ -62,7 +63,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	bgColor := _bgColor.(color.ByteColor)
+	bgColor := _bgColor.(bytecolor.Color)
 
 	// Setup foreground color
 	_fgColor, err := colorParser.ParseColor(fgColorString)
@@ -70,13 +71,13 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fgColor := _fgColor.(color.ByteColor)
+	fgColor := _fgColor.(bytecolor.Color)
 
 	// Setup environment
 	env := &SimpleEnvironment{}
 
 	// Setup device (standard output)
-	dev, err := renderer.NewWriterRenderer(os.Stdout)
+	dev, err := writer.NewRenderer(os.Stdout)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -91,7 +92,7 @@ func main() {
 
 	// Setup interpreter
 	interp, err := interpreter.NewBasicInterpreter(func(width, height int) (canvas.Canvas, error) {
-		return canvas.NewByteColorBuffer(width, height, bgColor, fgColor)
+		return bc.NewBuffer(width, height, bgColor, fgColor)
 	})
 	if err != nil {
 		fmt.Println(err)

@@ -1,3 +1,4 @@
+// Package color defines the Color interface and the Parser interface.
 package color
 
 // Color represents a color value.
@@ -9,20 +10,14 @@ type Color interface {
 	Equals(c Color) bool
 }
 
-// ByteColor represents a color value using a byte.
-// It implements the Color interface.
-type ByteColor byte
-
-// Ensure that ByteColor implements the Color interface.
-var (
-	_ Color = ByteColor(0)
-)
-
-// Equals returns whether this Color equals c.
-func (bc ByteColor) Equals(c Color) bool {
-	bc2, ok := c.(ByteColor)
-	if !ok {
-		return false
-	}
-	return bc == bc2
+// Parser represents a color parser.
+type Parser interface {
+	// ParseColor parses s and returns a Color.
+	//
+	// Errors
+	//
+	// common.ErrInvalidColor:
+	// Will be returned if the color is not recognized by this parser.
+	//
+	ParseColor(s string) (Color, error)
 }

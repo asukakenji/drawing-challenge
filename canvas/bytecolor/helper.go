@@ -1,6 +1,6 @@
-package canvas
+package bytecolor
 
-import "github.com/asukakenji/drawing-challenge/color"
+import "github.com/asukakenji/drawing-challenge/color/bytecolor"
 
 // point represents a point in the coordinate system.
 // The coordinate system is zero-based.
@@ -21,7 +21,7 @@ func isPointInsideCanvas(width, height, x, y int) bool {
 
 // fill fills b with bc
 // See the bytes.Repeat: https://golang.org/src/bytes/bytes.go
-func fill(b []color.ByteColor, bc color.ByteColor) {
+func fill(b []bytecolor.Color, bc bytecolor.Color) {
 	b[0] = bc
 	bp := 1
 	for bp < len(b) {

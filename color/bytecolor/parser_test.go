@@ -1,21 +1,22 @@
-package color
+package bytecolor
 
 import (
 	"testing"
 
+	"github.com/asukakenji/drawing-challenge/color"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-func TestByteColorParser_ParseColor(t *testing.T) {
-	parser := &ByteColorParser{ByteColor(' ')}
+func TestParser_ParseColor(t *testing.T) {
+	parser := &Parser{Color(' ')}
 
 	// Positive Cases
 	casesPos := []struct {
 		s     string
-		color Color
+		color color.Color
 	}{
-		{"A", ByteColor('A')},
-		{"", ByteColor(' ')},
+		{"A", Color('A')},
+		{"", Color(' ')},
 	}
 	for _, c := range casesPos {
 		color, err := parser.ParseColor(c.s)

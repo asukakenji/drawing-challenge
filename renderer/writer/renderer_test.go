@@ -1,4 +1,4 @@
-package renderer
+package writer
 
 import (
 	"bytes"
@@ -6,31 +6,32 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/asukakenji/drawing-challenge/canvas"
+	bc "github.com/asukakenji/drawing-challenge/canvas/bytecolor"
 	"github.com/asukakenji/drawing-challenge/color"
+	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-func TestNewWriterRenderer(t *testing.T) {
-	_, err := NewWriterRenderer(new(bytes.Buffer))
+func TestNewRenderer(t *testing.T) {
+	_, err := NewRenderer(new(bytes.Buffer))
 	if err != nil {
 		t.Errorf("Expected: err == nil, Got: %#v", err)
 	}
 
-	_, err = NewWriterRenderer(nil)
+	_, err = NewRenderer(nil)
 	if err != common.ErrNilPointer {
 		t.Errorf("Expected: err == %#v, Got: %#v", common.ErrNilPointer, err)
 	}
 }
 
-func TestWriterRenderer_Render_0(t *testing.T) {
-	cnv, err := canvas.NewByteColorBuffer(1, 1, color.ByteColor(' '), color.ByteColor('x'))
+func TestRenderer_Render_0(t *testing.T) {
+	cnv, err := bc.NewBuffer(1, 1, bytecolor.Color(' '), bytecolor.Color('x'))
 	if err != nil {
 		panic(err)
 	}
 
 	writer := new(bytes.Buffer)
-	renderer, err := NewWriterRenderer(writer)
+	renderer, err := NewRenderer(writer)
 	if err != nil {
 		panic(err)
 	}
@@ -46,8 +47,8 @@ func TestWriterRenderer_Render_0(t *testing.T) {
 	}
 }
 
-func TestWriterRenderer_Render_1(t *testing.T) {
-	cnv, err := canvas.NewByteColorBuffer(20, 4, color.ByteColor(' '), color.ByteColor('x'))
+func TestRenderer_Render_1(t *testing.T) {
+	cnv, err := bc.NewBuffer(20, 4, bytecolor.Color(' '), bytecolor.Color('x'))
 	if err != nil {
 		panic(err)
 	}
@@ -63,13 +64,13 @@ func TestWriterRenderer_Render_1(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	err = cnv.BucketFill(9, 2, color.ByteColor('o'))
+	err = cnv.BucketFill(9, 2, bytecolor.Color('o'))
 	if err != nil {
 		panic(err)
 	}
 
 	writer := new(bytes.Buffer)
-	renderer, err := NewWriterRenderer(writer)
+	renderer, err := NewRenderer(writer)
 	if err != nil {
 		panic(err)
 	}
@@ -111,11 +112,11 @@ func (dc dummyCanvas) BucketFill(x, y int, c color.Color) error {
 	return nil
 }
 
-func TestWriterRenderer_Render_2(t *testing.T) {
+func TestRenderer_Render_2(t *testing.T) {
 	cnv := dummyCanvas(0)
 
 	writer := new(bytes.Buffer)
-	renderer, err := NewWriterRenderer(writer)
+	renderer, err := NewRenderer(writer)
 	if err != nil {
 		panic(err)
 	}
@@ -173,7 +174,7 @@ func (abbc *anotherBufferBasedCanvas) At(x, y int) (color.Color, error) {
 	b := abbc.pixels[y*abbc.width+x]
 	switch abbc.mode {
 	case 0:
-		return color.ByteColor(b), nil
+		return bytecolor.Color(b), nil
 	case 1:
 		return byteColor(b), nil
 	case 2:
@@ -187,7 +188,7 @@ func (abbc *anotherBufferBasedCanvas) Set(x, y int, c color.Color) error {
 	return nil
 }
 
-func TestWriterRenderer_Render_3(t *testing.T) {
+func TestRenderer_Render_3(t *testing.T) {
 	cnv := &anotherBufferBasedCanvas{
 		mode:   0,
 		width:  3,
@@ -196,7 +197,7 @@ func TestWriterRenderer_Render_3(t *testing.T) {
 	}
 
 	writer := new(bytes.Buffer)
-	renderer, err := NewWriterRenderer(writer)
+	renderer, err := NewRenderer(writer)
 	if err != nil {
 		panic(err)
 	}

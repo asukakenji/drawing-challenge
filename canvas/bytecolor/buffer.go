@@ -1,43 +1,45 @@
-package canvas
+// Package bytecolor defines the Buffer,
+// which implements the canvas.BufferBasedCanvas interface.
+package bytecolor
 
 import (
 	"container/list"
 
+	"github.com/asukakenji/drawing-challenge/canvas"
 	"github.com/asukakenji/drawing-challenge/color"
+	"github.com/asukakenji/drawing-challenge/color/bytecolor"
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
-// ByteColorBuffer is a canvas based on a buffer of color.ByteColor.
-// It implements the Canvas interface and the BufferBasedCanvas interface.
-type ByteColorBuffer struct {
+// Buffer is a canvas based on a buffer of bytecolor.Color.
+// It implements the canvas.BufferBasedCanvas interface.
+type Buffer struct {
 	width           int
 	height          int
-	backgroundColor color.ByteColor
-	foregroundColor color.ByteColor
-	pixels          []color.ByteColor
+	backgroundColor bytecolor.Color
+	foregroundColor bytecolor.Color
+	pixels          []bytecolor.Color
 }
 
-// Ensure that ByteColorBuffer implements the Canvas interface
-// and the BufferBasedCanvas interface.
+// Ensure that Buffer implements the canvas.BufferBasedCanvas interface.
 var (
-	_ Canvas            = &ByteColorBuffer{}
-	_ BufferBasedCanvas = &ByteColorBuffer{}
+	_ canvas.BufferBasedCanvas = &Buffer{}
 )
 
-// NewByteColorBuffer returns a new ByteColorBuffer.
+// NewBuffer returns a new Buffer.
 //
 // Errors
 //
 // common.ErrWidthOrHeightNotPositive:
 // Will be returned if width <= 0, or height <= 0.
 //
-func NewByteColorBuffer(width, height int, bgColor, fgColor color.ByteColor) (*ByteColorBuffer, error) {
+func NewBuffer(width, height int, bgColor, fgColor bytecolor.Color) (*Buffer, error) {
 	if width <= 0 || height <= 0 {
 		return nil, common.ErrWidthOrHeightNotPositive
 	}
-	pixels := make([]color.ByteColor, width*height)
+	pixels := make([]bytecolor.Color, width*height)
 	fill(pixels, bgColor)
-	return &ByteColorBuffer{
+	return &Buffer{
 		width:           width,
 		height:          height,
 		backgroundColor: bgColor,
@@ -47,17 +49,17 @@ func NewByteColorBuffer(width, height int, bgColor, fgColor color.ByteColor) (*B
 }
 
 // Dimensions returns the width and height.
-func (cnv *ByteColorBuffer) Dimensions() (width, height int) {
+func (cnv *Buffer) Dimensions() (width, height int) {
 	return cnv.width, cnv.height
 }
 
 // Pixels returns the underlying pixel buffer.
-func (cnv *ByteColorBuffer) Pixels() []color.ByteColor {
+func (cnv *Buffer) Pixels() []bytecolor.Color {
 	return cnv.pixels
 }
 
 // at is the same as At, but without boundary checks.
-func (cnv *ByteColorBuffer) at(x, y int) color.ByteColor {
+func (cnv *Buffer) at(x, y int) bytecolor.Color {
 	index := xyToIndex(cnv.width, x, y)
 	return cnv.pixels[index]
 }
@@ -69,7 +71,7 @@ func (cnv *ByteColorBuffer) at(x, y int) color.ByteColor {
 // common.ErrPointOutsideCanvas:
 // Will be returned if (x, y) is outside the canvas.
 //
-func (cnv *ByteColorBuffer) At(x, y int) (color.Color, error) {
+func (cnv *Buffer) At(x, y int) (color.Color, error) {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
 		return cnv.backgroundColor, common.ErrPointOutsideCanvas
 	}
@@ -77,7 +79,7 @@ func (cnv *ByteColorBuffer) At(x, y int) (color.Color, error) {
 }
 
 // set is the same as Set, but without boundary checks.
-func (cnv *ByteColorBuffer) set(x, y int, bc color.ByteColor) {
+func (cnv *Buffer) set(x, y int, bc bytecolor.Color) {
 	index := xyToIndex(cnv.width, x, y)
 	cnv.pixels[index] = bc
 }
@@ -92,11 +94,11 @@ func (cnv *ByteColorBuffer) set(x, y int, bc color.ByteColor) {
 // common.ErrColorTypeNotSupported:
 // Will be returned if c is not supported by the canvas.
 //
-func (cnv *ByteColorBuffer) Set(x, y int, c color.Color) error {
+func (cnv *Buffer) Set(x, y int, c color.Color) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
 		return common.ErrPointOutsideCanvas
 	}
-	bc, ok := c.(color.ByteColor)
+	bc, ok := c.(bytecolor.Color)
 	if !ok {
 		return common.ErrColorTypeNotSupported
 	}
@@ -105,7 +107,7 @@ func (cnv *ByteColorBuffer) Set(x, y int, c color.Color) error {
 }
 
 // drawLine is the same as DrawLine, but without boundary checks.
-func (cnv *ByteColorBuffer) drawLine(x1, y1, x2, y2 int) {
+func (cnv *Buffer) drawLine(x1, y1, x2, y2 int) {
 	bc := cnv.foregroundColor
 	if x1 == x2 {
 		if y1 > y2 {
@@ -134,7 +136,7 @@ func (cnv *ByteColorBuffer) drawLine(x1, y1, x2, y2 int) {
 // common.ErrLineNotHorizontalOrVertical:
 // Will be returned if the line is not horizontal or vertical.
 //
-func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
+func (cnv *Buffer) DrawLine(x1, y1, x2, y2 int) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x1, y1) || !isPointInsideCanvas(cnv.width, cnv.height, x2, y2) {
 		return common.ErrPointOutsideCanvas
 	}
@@ -153,7 +155,7 @@ func (cnv *ByteColorBuffer) DrawLine(x1, y1, x2, y2 int) error {
 // common.ErrPointOutsideCanvas:
 // Will be returned if (x1, y1) or (x2, y2) is outside the canvas.
 //
-func (cnv *ByteColorBuffer) DrawRect(x1, y1, x2, y2 int) error {
+func (cnv *Buffer) DrawRect(x1, y1, x2, y2 int) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x1, y1) || !isPointInsideCanvas(cnv.width, cnv.height, x2, y2) {
 		return common.ErrPointOutsideCanvas
 	}
@@ -165,7 +167,7 @@ func (cnv *ByteColorBuffer) DrawRect(x1, y1, x2, y2 int) error {
 }
 
 // bucketFill is the same as BucketFill, but without boundary checks.
-func (cnv *ByteColorBuffer) bucketFill(bc, colorToBeReplaced color.ByteColor, pointsToBeFilled *list.List, pointsAlreadyProcessed *boolBuffer) {
+func (cnv *Buffer) bucketFill(bc, colorToBeReplaced bytecolor.Color, pointsToBeFilled *list.List, pointsAlreadyProcessed *boolBuffer) {
 	for pointsToBeFilled.Len() != 0 {
 		back := pointsToBeFilled.Back()
 		pointsToBeFilled.Remove(back)
@@ -206,11 +208,11 @@ func (cnv *ByteColorBuffer) bucketFill(bc, colorToBeReplaced color.ByteColor, po
 // common.ErrColorTypeNotSupported:
 // Will be returned if c is not supported by the canvas.
 //
-func (cnv *ByteColorBuffer) BucketFill(x, y int, c color.Color) error {
+func (cnv *Buffer) BucketFill(x, y int, c color.Color) error {
 	if !isPointInsideCanvas(cnv.width, cnv.height, x, y) {
 		return common.ErrPointOutsideCanvas
 	}
-	bc, ok := c.(color.ByteColor)
+	bc, ok := c.(bytecolor.Color)
 	if !ok {
 		return common.ErrColorTypeNotSupported
 	}
