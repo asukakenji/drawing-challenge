@@ -1,7 +1,6 @@
 package simple
 
 import (
-	"github.com/asukakenji/drawing-challenge/canvas"
 	"github.com/asukakenji/drawing-challenge/command"
 	"github.com/asukakenji/drawing-challenge/command/basic"
 	"github.com/asukakenji/drawing-challenge/common"
@@ -13,13 +12,14 @@ import (
 // It implements the interpreter.Interpreter interface.
 //
 // Commands supported by this interpreter:
-// NewCanvasCommand,
-// DrawLineCommand,
-// DrawRectCommand,
-// BucketFillCommand.
+// basic.EmptyCommand,
+// basic.NewCanvasCommand,
+// basic.DrawLineCommand,
+// basic.DrawRectCommand,
+// basic.BucketFillCommand,
+// basic.QuitCommand.
 //
 type Interpreter struct {
-	newCanvasFunc func(int, int) (canvas.Canvas, error)
 }
 
 // Ensure that Interpreter implements the interpreter.Interpreter interface.
@@ -31,22 +31,17 @@ var (
 //
 // Errors
 //
-// common.ErrNilPointer:
-// Will be returned if newCanvasFunc == nil.
+// (None)
 //
-func NewInterpreter(newCanvasFunc func(int, int) (canvas.Canvas, error)) (*Interpreter, error) {
-	if newCanvasFunc == nil {
-		return nil, common.ErrNilPointer
-	}
-	return &Interpreter{
-		newCanvasFunc: newCanvasFunc,
-	}, nil
+func NewInterpreter() (*Interpreter, error) {
+	return &Interpreter{}, nil
 }
 
 // Interpret interprets the command cmd with the given environment env.
 //
-// env must implement the CanvasContainer interface
-// and the renderer.Renderer interface.
+// env must implement the CanvasContainer interface,
+// the renderer.Renderer interface,
+// and the Quitter interface.
 //
 // Errors
 //
@@ -73,13 +68,19 @@ func (interp *Interpreter) Interpret(env interface{}, cmd command.Command) error
 	if !ok {
 		return common.ErrEnvironmentNotSupported
 	}
+	qt, ok := env.(Quitter)
+	if !ok {
+		return common.ErrEnvironmentNotSupported
+	}
 	switch cmd := cmd.(type) {
+	case basic.EmptyCommand:
+		// Nothing to be done
 	case basic.NewCanvasCommand:
-		cnv, err := interp.newCanvasFunc(cmd.Width, cmd.Height)
+		err := cc.NewCanvas(cmd.Width, cmd.Height)
 		if err != nil {
 			return err
 		}
-		cc.SetCanvas(cnv)
+		cnv := cc.Canvas()
 		rdr.Render(cnv)
 	case basic.DrawLineCommand:
 		cnv := cc.Canvas()
@@ -111,6 +112,8 @@ func (interp *Interpreter) Interpret(env interface{}, cmd command.Command) error
 			return err
 		}
 		rdr.Render(cnv)
+	case basic.QuitCommand:
+		qt.SetQuit()
 	default:
 		return common.ErrCommandNotSupported
 	}

@@ -65,9 +65,7 @@ func main() {
 	}
 
 	// Setup interpreter
-	interp, err := simple.NewInterpreter(func(width, height int) (canvas.Canvas, error) {
-		return bc.NewBuffer(width, height, bgColor, fgColor)
-	})
+	interp, err := simple.NewInterpreter()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -81,7 +79,10 @@ func main() {
 	}
 
 	// Setup environment
-	env, err := simple.NewEnvironment(rdr)
+	newCanvasFunc := func(width, height int) (canvas.Canvas, error) {
+		return bc.NewBuffer(width, height, bgColor, fgColor)
+	}
+	env, err := simple.NewEnvironment(newCanvasFunc, rdr)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -89,7 +90,7 @@ func main() {
 
 	stdin := bufio.NewScanner(os.Stdin)
 	stdin.Split(bufio.ScanLines)
-	for {
+	for !env.ShouldQuit() {
 		fmt.Print("enter command: ")
 		if !stdin.Scan() {
 			break
@@ -101,16 +102,9 @@ func main() {
 			continue
 		}
 
-		switch cmd := cmd.(type) {
-		case basic.EmptyCommand:
-			continue
-		case basic.QuitCommand:
-			return
-		default:
-			err = interp.Interpret(env, cmd)
-			if err != nil {
-				fmt.Println(err)
-			}
+		err = interp.Interpret(env, cmd)
+		if err != nil {
+			fmt.Println(err)
 		}
 	}
 }

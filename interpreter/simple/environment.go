@@ -14,16 +14,27 @@ type CanvasContainer interface {
 	// Canvas returns the contained canvas.Canvas.
 	Canvas() canvas.Canvas
 
-	// SetCanvas set the contained canvas.Canvas.
-	SetCanvas(canvas.Canvas)
+	// NewCanvas creates a new canvas.Canvas.
+	NewCanvas(width, height int) error
+}
+
+// Quitter is a container of a bool which determines if the program should quit.
+type Quitter interface {
+	// ShouldQuit returns if the program should quit.
+	ShouldQuit() bool
+
+	// SetQuit causes ShouldQuit to return true hereafter.
+	SetQuit()
 }
 
 // Environment is a simple environment for the interpreter.
 // It implements the CanvasContainer interface
 // and the renderer.Renderer interface.
 type Environment struct {
-	cnv canvas.Canvas
-	rdr renderer.Renderer
+	newCanvasFunc func(int, int) (canvas.Canvas, error)
+	cnv           canvas.Canvas
+	rdr           renderer.Renderer
+	shouldQuit    bool
 }
 
 // NewEnvironment returns a new Environment.
@@ -33,12 +44,16 @@ type Environment struct {
 // common.ErrNilPointer:
 // Will be returned if rdr == nil.
 //
-func NewEnvironment(rdr renderer.Renderer) (*Environment, error) {
+func NewEnvironment(newCanvasFunc func(int, int) (canvas.Canvas, error), rdr renderer.Renderer) (*Environment, error) {
+	if newCanvasFunc == nil {
+		return nil, common.ErrNilPointer
+	}
 	if rdr == nil {
 		return nil, common.ErrNilPointer
 	}
 	return &Environment{
-		rdr: rdr,
+		newCanvasFunc: newCanvasFunc,
+		rdr:           rdr,
 	}, nil
 }
 
@@ -47,12 +62,27 @@ func (env *Environment) Canvas() canvas.Canvas {
 	return env.cnv
 }
 
-// SetCanvas set the contained canvas.Canvas.
-func (env *Environment) SetCanvas(cnv canvas.Canvas) {
+// NewCanvas creates a new canvas.Canvas.
+func (env *Environment) NewCanvas(width, height int) error {
+	cnv, err := env.newCanvasFunc(width, height)
+	if err != nil {
+		return err
+	}
 	env.cnv = cnv
+	return nil
 }
 
 // Render renders cnv.
 func (env *Environment) Render(cnv canvas.Canvas) error {
 	return env.rdr.Render(cnv)
+}
+
+// ShouldQuit returns if the program should quit.
+func (env *Environment) ShouldQuit() bool {
+	return env.shouldQuit
+}
+
+// SetQuit causes ShouldQuit to return true hereafter.
+func (env *Environment) SetQuit() {
+	env.shouldQuit = true
 }
