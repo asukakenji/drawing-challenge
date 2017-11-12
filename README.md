@@ -136,7 +136,7 @@ this project is flexible enough to handle them all.
 ### Package Diagram
 
 There are 5 library packages for interfaces, 6 library pachages for non-interfaces,
-and 1 main package. The library package are shown in the following diagram:
+and 1 main package. The library packages are shown in the following diagram:
 
 ![Package Diagram](./images/PackageDiagram.png)
 
