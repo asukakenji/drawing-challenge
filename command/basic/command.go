@@ -1,3 +1,7 @@
+// Package basic defines several "Value Object" types
+// which implement the command.Command interface,
+// and the Parser type,
+// which implements the command.Parser interface.
 package basic
 
 import (

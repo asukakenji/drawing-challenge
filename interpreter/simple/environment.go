@@ -1,6 +1,3 @@
-// Package simple defines the CanvasContainer interface,
-// and the Environment type
-// which implements it and the renderer.Renderer interface.
 package simple
 
 import (

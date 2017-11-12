@@ -135,32 +135,51 @@ this project is flexible enough to handle them all.
 
 ### Package Diagram
 
-There are 6 library packages and 1 main package, as shown in the diagram:
+There are 5 library packages for interfaces, 6 library pachages for non-interfaces,
+and 1 main package. The library package are shown in the following diagram:
 
 ![Package Diagram](./images/PackageDiagram.png)
 
-Click [here](https://drive.google.com/file/d/0B6JV6ICUUqcuazU1RDV0MUNrMmM/view?usp=sharing) for the full-size diagram.
+Click [here](https://drive.google.com/file/d/1WtJBLJyGjeKflJlvTQpVqqReJshxw5i4/view?usp=sharing) for the full-size diagram.
 
-Package common defines types and variables
+#### Interface Packages
+
+Package `color` defines the `Color` interface and the `Parser` interface.
+
+Package `canvas` defines the `Canvas` interface and the `BufferBasedCanvas` interface.
+
+Package `renderer` defines the `Renderer` interface.
+
+Package `command` defines the `Command` interface, and the `Parser` interface.
+
+Package `interpreter` defines the `Interpreter` interface.
+
+#### Non-Interface Packages
+
+Package `common` defines types and variables
 which are needed by other packages in the project.
 
-Package color defines the `Color` interface,
-the `ByteColor` type which implements it, the `Parser` interface,
-and the `ByteColorParser` type which implements it.
+Package `bytecolor` (`color/bytecolor`) defines the `ByteColor` type,
+which implements the `color.Color` interface,
+and the `Parser` type,
+which implements the `color.Parser` interface.
 
-Package canvas defines the `Canvas` interface,
-the `BufferBasedCanvas` interface,
-and the `ByteColorBuffer` type which implements it.
+Package `bytecolor` (`canvas/bytecolor`) defines the `Buffer` type,
+which implements the `canvas.BufferBasedCanvas` interface.
 
-Package command defines the `Command` interface,
-several types which implement it, the `Parser` interface,
-and the `BasicParser` type which implements it.
+Package `basic` defines several "Value Object" types
+which implement the `command.Command` interface,
+and the `Parser` type,
+which implements the `command.Parser` interface.
 
-Package renderer defines the `Renderer` interface,
-and the `WriterRenderer` type which implements it.
+Package `writer` defines the `Renderer` type,
+which implements the `renderer.Renderer` interface.
 
-Package interpreter defines the `Interpreter` interface,
-and the `BasicInterpreter` type which implements it.
+Package `simple` defines the `Interpreter` type,
+which is a stateless interpreter implementing `interpreter.Interpreter`,
+and the `CanvasContainer` interface and the `Quitter` interface,
+which are used to specify the requirements of the `Interpreter` type,
+and the `Environment` type, which fulfills the requirements.
 
 ### Class Diagram
 

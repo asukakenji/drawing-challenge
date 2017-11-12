@@ -1,3 +1,8 @@
+// Package simple defines the Interpreter type,
+// which is a stateless interpreter implementing interpreter.Interpreter,
+// and the CanvasContainer interface and the Quitter interface,
+// which are used to specify the requirements of the Interpreter type,
+// and the Environment type, which fulfills the requirements.
 package simple
 
 import (
