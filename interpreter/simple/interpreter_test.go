@@ -14,6 +14,10 @@ import (
 	"github.com/asukakenji/drawing-challenge/common"
 )
 
+var newCanvasFunc = func(width, height int) (canvas.Canvas, error) {
+	return bc.NewBuffer(width, height, bytecolor.Color(' '), bytecolor.Color('x'))
+}
+
 // This type is created for testing purpose only
 type mockCanvas struct {
 	width    int
@@ -176,10 +180,6 @@ func TestInterpreter_Interpret(t *testing.T) {
 	}
 
 	// Negative Cases
-	newCanvasFunc := func(width, height int) (canvas.Canvas, error) {
-		return bc.NewBuffer(width, height, bytecolor.Color(' '), bytecolor.Color('x'))
-	}
-
 	envNeg := newMockEnvironment(newCanvasFunc)
 
 	casesNeg := []struct {
