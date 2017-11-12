@@ -10,6 +10,7 @@ https://github.com/asukakenji/drawing-challenge
 - [Technical Diagrams](#technical-diagrams)
 - [Design Documentation](#design-documentation)
 - [API Documentation](#api-documentation)
+- [Test Coverage](#test-coverage)
 
 ## User Manual
 
@@ -219,13 +220,15 @@ to (x, y) having the same color as that at (x, y) are replaced by c.
 
 This behavior is influenced by most existing drawing software.
 
-## API Documentation (From GoDoc, Preferred Way)
+## API Documentation
+
+### From GoDoc, Preferred Way
 
 Visit the following URL:
 
 https://godoc.org/github.com/asukakenji/drawing-challenge
 
-## API Documentation (From Localhost)
+### From Localhost
 
 Run the following command in the command prompt / terminal:
 
@@ -234,3 +237,13 @@ Run the following command in the command prompt / terminal:
 Then, open a web browser and visit:
 
 http://127.0.0.1:6060/pkg/github.com/asukakenji/drawing-challenge/
+
+## Test Coverage
+
+All library packages are 100% tested, counted by statement coverage.
+
+To check this, run the following command in the command prompt / terminal:
+
+    go test -cover github.com/asukakenji/drawing-challenge/...
+
+Please type the final 3 dots (`...`) as is.
