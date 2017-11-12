@@ -13,6 +13,7 @@ import (
 // It implements the command.Parser interface.
 //
 // Commands supported by this parser:
+// EmptyCommand,
 // NewCanvasCommand,
 // DrawLineCommand,
 // DrawRectCommand,
@@ -23,7 +24,7 @@ type Parser struct {
 	parseColorFunc func(string) (color.Color, error)
 }
 
-// Ensure that BasicParser implements the Parser interface.
+// Ensure that Parser implements the command.Parser interface.
 var (
 	_ command.Parser = &Parser{}
 )
@@ -44,7 +45,7 @@ func NewParser(parseColorFunc func(string) (color.Color, error)) (*Parser, error
 	}, nil
 }
 
-// ParseCommand parses s and returns a command.Command.
+// ParseCommand parses the string s and returns a command.Command.
 //
 // Errors
 //
