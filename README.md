@@ -244,9 +244,13 @@ http://127.0.0.1:6060/pkg/github.com/asukakenji/drawing-challenge/
 
 ## Test Coverage
 
-All library packages are 100% tested, counted by statement coverage.
+The project is 100% tested, counted by statement coverage.
 
-To check this, run the following command in the command prompt / terminal:
+To check this, please check the badge below:
+
+[![Coverage Status](https://coveralls.io/repos/github/asukakenji/drawing-challenge/badge.svg?branch=master)](https://coveralls.io/github/asukakenji/drawing-challenge)
+
+To test the project manually, run the following command in the command prompt / terminal:
 
     go test -cover github.com/asukakenji/drawing-challenge/...
 
