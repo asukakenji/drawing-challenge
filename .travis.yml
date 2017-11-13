@@ -1,6 +1,8 @@
 language: go
 sudo: false
 
+# Needed for Travas CI (https://travis-ci.org/)
+# See https://docs.travis-ci.com/user/languages/go/ for more information
 # See https://github.com/travis-ci/gimme/blob/master/.testdata/binary-linux for known golang versions
 go:
   - 1.2.x
@@ -11,3 +13,10 @@ go:
   - 1.7.x
   - 1.8.x
   - 1.9.x
+
+# Needed for Coveralls (https://coveralls.io/)
+# See https://coveralls.zendesk.com/hc/en-us/articles/201342809-Go for more information
+before_install:
+  - go get github.com/mattn/goveralls
+script:
+  - $GOPATH/bin/goveralls -service=travis-ci
