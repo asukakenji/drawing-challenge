@@ -16,7 +16,9 @@ go:
 
 # Needed for Coveralls (https://coveralls.io/)
 # See https://coveralls.zendesk.com/hc/en-us/articles/201342809-Go for more information
+# "go get golang.org/x/tools/cmd/cover" below is needed for go 1.4.x
 before_install:
   - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
 script:
   - $GOPATH/bin/goveralls -service=travis-ci
