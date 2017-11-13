@@ -246,7 +246,7 @@ http://127.0.0.1:6060/pkg/github.com/asukakenji/drawing-challenge/
 
 The project is 100% tested, counted by statement coverage.
 
-To check this, please check the badge below:
+To confirm this, please check the badge below:
 
 [![Coverage Status](https://coveralls.io/repos/github/asukakenji/drawing-challenge/badge.svg?branch=master)](https://coveralls.io/github/asukakenji/drawing-challenge)
 
