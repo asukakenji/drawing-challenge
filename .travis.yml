@@ -1,0 +1,13 @@
+language: go
+sudo: false
+
+# See https://github.com/travis-ci/gimme/blob/master/.testdata/binary-linux for known golang versions
+go:
+  - 1.2.x
+  - 1.3.x
+  - 1.4.x
+  - 1.5.x
+  - 1.6.x
+  - 1.7.x
+  - 1.8.x
+  - 1.9.x
