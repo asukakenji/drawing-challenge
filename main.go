@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/asukakenji/drawing-challenge/canvas"
@@ -32,6 +33,11 @@ func init() {
 	flag.StringVar(&fgColorString, "fgColor", DefaultFGColorString, "The foreground color of the canvas")
 }
 
+var (
+	input  io.Reader = os.Stdin
+	output io.Writer = os.Stdout
+)
+
 func main() {
 	// Setup command line flags
 	flag.Parse()
@@ -44,67 +50,52 @@ func main() {
 	// Setup background color
 	_bgColor, err := colorParser.ParseColor(bgColorString)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	bgColor := _bgColor.(bytecolor.Color)
 
 	// Setup foreground color
 	_fgColor, err := colorParser.ParseColor(fgColorString)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	fgColor := _fgColor.(bytecolor.Color)
 
-	// Setup command parser
-	commandParser, err := basic.NewParser(colorParser.ParseColor)
+	// Setup command parser (the only possible error is common.ErrNilPointer)
+	commandParser, _ := basic.NewParser(colorParser.ParseColor)
+
+	// Setup interpreter (no error)
+	interp, _ := simple.NewInterpreter()
+
+	// Setup renderer (the only possible error is common.ErrNilPointer)
+	rdr, err := writer.NewRenderer(output)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 
-	// Setup interpreter
-	interp, err := simple.NewInterpreter()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// Setup renderer (standard output)
-	rdr, err := writer.NewRenderer(os.Stdout)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// Setup environment
+	// Setup environment (the only possible error is common.ErrNilPointer)
 	newCanvasFunc := func(width, height int) (canvas.Canvas, error) {
 		return bc.NewBuffer(width, height, bgColor, fgColor)
 	}
-	env, err := simple.NewEnvironment(newCanvasFunc, rdr)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	env, _ := simple.NewEnvironment(newCanvasFunc, rdr)
 
-	stdin := bufio.NewScanner(os.Stdin)
+	stdin := bufio.NewScanner(input)
 	stdin.Split(bufio.ScanLines)
 	for !env.ShouldQuit() {
-		fmt.Print("enter command: ")
+		fmt.Fprint(output, "enter command: ")
 		if !stdin.Scan() {
 			break
 		}
 		line := stdin.Text()
 		cmd, err := commandParser.ParseCommand(line)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintln(output, err)
 			continue
 		}
 
 		err = interp.Interpret(env, cmd)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintln(output, err)
 		}
 	}
 }
