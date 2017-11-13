@@ -1,5 +1,9 @@
 # Drawing Challenge
 
+[![Build Status](https://travis-ci.org/asukakenji/drawing-challenge.png?branch=master)](https://travis-ci.org/asukakenji/drawing-challenge)
+[![GoDoc](https://godoc.org/github.com/asukakenji/drawing-challenge?status.svg)](https://godoc.org/github.com/asukakenji/drawing-challenge)
+[![Coverage Status](https://coveralls.io/repos/github/asukakenji/drawing-challenge/badge.svg?branch=master)](https://coveralls.io/github/asukakenji/drawing-challenge)
+
 The latest version of this project is available at:
 
 https://github.com/asukakenji/drawing-challenge
